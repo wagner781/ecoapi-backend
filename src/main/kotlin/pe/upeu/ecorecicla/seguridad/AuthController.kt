@@ -11,7 +11,7 @@ import pe.upeu.ecorecicla.config.*
 
 data class LoginPeticion(@field:NotBlank val usuario: String, @field:NotBlank val password: String)
 data class UsuarioRespuesta(val id: Long, val usuario: String, val nombre: String, val rol: String, val privilegios: Set<String>,val activo: Boolean=true)
-data class SesionRespuesta(val token: String, val usuario: String, val nombre: String, val rol: String, val privilegios: Set<String>, val expiresIn: Long = 3600,val id: Long=0)
+data class SesionRespuesta(val token: String, val usuario: String, val nombre: String, val rol: String, val privilegios: Set<String>, val expiresIn: Long = 3600,val id: Long=0,val expiresAt: Long=0)
 
 @RestController
 @RequestMapping("/api/v1")

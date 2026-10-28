@@ -16,14 +16,13 @@ class JwtService(@param:Value("\${eco.jwt-secret}") private val secret: String,p
             JwtTimestampValidator(java.time.Duration.ZERO), JwtIssuerValidator("ecoapi"),
             org.springframework.security.oauth2.core.OAuth2TokenValidator<Jwt> { jwt ->
                 val user=jwt.subject?.toLongOrNull()?.let(usuarios::porId)
-                if(user!=null && user.activo && user.versionSesion==jwt.getClaim<Number>("version")?.toLong()) org.springframework.security.oauth2.core.OAuth2TokenValidatorResult.success()
+                if(user!=null && user.activo && user.versionSesion==(jwt.claims["version"] as? Number)?.toLong()) org.springframework.security.oauth2.core.OAuth2TokenValidatorResult.success()
                 else org.springframework.security.oauth2.core.OAuth2TokenValidatorResult.failure(org.springframework.security.oauth2.core.OAuth2Error("invalid_token","La cuenta o sus permisos cambiaron; inicia sesion nuevamente",null))
             }
         ))
     }
     @Bean fun jwtEncoder(): JwtEncoder = NimbusJwtEncoder(ImmutableSecret(secret.toByteArray()))
-    fun emitir(encoder: JwtEncoder, id: Long, username: String, privilegios: Set<String>,version: Long=0): String {
-        val now = Instant.now()
+    fun emitir(encoder: JwtEncoder, id: Long, username: String, privilegios: Set<String>,version: Long=0,now: Instant=Instant.now()): String {
         val claims = JwtClaimsSet.builder().issuer("ecoapi").subject(id.toString()).issuedAt(now).expiresAt(now.plusSeconds(3600)).claim("username", username).claim("version",version).claim("privilegios", privilegios.toList()).build()
         return encoder.encode(JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS256).build(), claims)).tokenValue
     }

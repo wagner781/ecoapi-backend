@@ -13,7 +13,8 @@ class AuthService(private val users: UsuarioRepository,private val passwords: Pa
         val coincide=try { passwords.matches(body.password,user.password) } catch (_: IllegalArgumentException) { false }
         if(!user.activo || !coincide) throw Fallo(401,"Credenciales incorrectas")
         val permisos=users.privilegios(user.rol)
-        return SesionRespuesta(tokens.emitir(encoder,user.id,user.username,permisos,user.versionSesion),user.username,user.nombre,user.rol,permisos,id=user.id)
+        val ahora=java.time.Instant.now()
+        return SesionRespuesta(tokens.emitir(encoder,user.id,user.username,permisos,user.versionSesion,ahora),user.username,user.nombre,user.rol,permisos,id=user.id,expiresAt=ahora.plusSeconds(3600).epochSecond)
     }
     fun actual(id: Long): UsuarioRespuesta {
         val user=users.porId(id)?.takeIf { it.activo } ?: throw Fallo(401,"Sesion invalida")
