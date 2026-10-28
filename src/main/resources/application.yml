@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/ecorecicla}
+    username: ${DB_USER:ecorecicla}
+    password: ${DB_PASSWORD:ecorecicla-local}
+  sql:
+    init:
+      mode: always
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+server:
+  port: ${PORT:8080}
+eco:
+  jwt-secret: ${JWT_SECRET:solo-desarrollo-cambiar-esta-clave-de-32-bytes-minimo}

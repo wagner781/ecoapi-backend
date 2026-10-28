@@ -1,0 +1,31 @@
+name: Verificar EcoAPI
+on: [push, pull_request]
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: ecorecicla
+          POSTGRES_USER: ecorecicla
+          POSTGRES_PASSWORD: ecorecicla-local
+        ports: ['5433:5432']
+        options: --health-cmd "pg_isready -U ecorecicla" --health-interval 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: chmod +x gradlew && ./gradlew build
+      - run: |
+          java -jar build/libs/ecoapi-backend-0.1.0.jar > server.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -s http://localhost:8080/api/v1/me | grep -q Unauthorized; then break; fi
+            sleep 2
+          done
+          npm run test:api

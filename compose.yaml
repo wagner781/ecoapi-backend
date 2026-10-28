@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: ecorecicla
+      POSTGRES_USER: ecorecicla
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-ecorecicla-local}
+    ports: ["5433:5432"]
+    volumes: ["eco-data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecorecicla"]
+      interval: 3s
+      retries: 20
+  api:
+    build: .
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/ecorecicla
+      DB_USER: ecorecicla
+      DB_PASSWORD: ${DB_PASSWORD:-ecorecicla-local}
+      JWT_SECRET: ${JWT_SECRET:-solo-desarrollo-cambiar-esta-clave-de-32-bytes-minimo}
+    ports: ["8080:8080"]
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  eco-data:
