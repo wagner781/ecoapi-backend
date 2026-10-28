@@ -72,4 +72,14 @@ class OperacionesTest(@Autowired val mvc: MockMvc,@Autowired val json: ObjectMap
         val expired=encoder.encode(JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS256).build(),claims)).tokenValue
         mvc.get("/api/v1/me") { header("Authorization","Bearer $expired") }.andExpect { status { isUnauthorized() } }
     }
+    @Test fun `RN02 rechaza correccion propia fuera del mismo dia`() {
+        val r=ruta(); val p=repo.pesajes(r.puntos.first().id,0,100).first.first { it.rutaId==r.id }
+        repo.db.update("UPDATE pesaje SET fecha_hora=? WHERE id=?",service.hoy().minusDays(1).atStartOfDay(java.time.ZoneId.of("America/Lima")).toOffsetDateTime().toString(),p.id)
+        mvc.put("/api/v1/pesajes/${p.id}") { header("Authorization","Bearer ${token("operario1")}"); contentType=MediaType.APPLICATION_JSON; content=body(r.id,p.puntoId) }.andExpect { status { isForbidden() } }
+    }
+    @Test fun `RN01 rechaza correccion en ruta cerrada`() {
+        val r=repo.delDia(ruta().usuarioId,service.hoy().minusDays(1))!!
+        val p=repo.pesajes(r.puntos.first().id,0,100).first.first { it.rutaId==r.id }
+        mvc.put("/api/v1/pesajes/${p.id}") { header("Authorization","Bearer ${token("supervisor1")}"); contentType=MediaType.APPLICATION_JSON; content=body(r.id,p.puntoId) }.andExpect { status { isConflict() } }
+    }
 }
