@@ -1,0 +1,291 @@
+{
+  "info": {
+    "name": "EcoAPI - contrato y errores",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "rutaId",
+      "value": "1"
+    },
+    {
+      "key": "puntoId",
+      "value": "1"
+    },
+    {
+      "key": "pesajeId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Login operario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"operario1\",\n  \"password\": \"Eco2026*\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Login correcto', () => pm.response.to.have.status(200));",
+              "if (pm.response.code === 200) pm.collectionVariables.set('token', pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Login supervisor",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"supervisor1\",\n  \"password\": \"Eco2026*\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Login correcto', () => pm.response.to.have.status(200));",
+              "if (pm.response.code === 200) pm.collectionVariables.set('token', pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "401 sin token",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/me"
+      }
+    },
+    {
+      "name": "Perfil",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/me"
+      }
+    },
+    {
+      "name": "Ruta del día",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/rutas/dia"
+      }
+    },
+    {
+      "name": "Puntos paginados",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/puntos?pagina=0&tamanio=20&zona=Norte"
+      }
+    },
+    {
+      "name": "Pesajes",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/puntos/{{puntoId}}/pesajes"
+      }
+    },
+    {
+      "name": "Registrar",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/pesajes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"claveCliente\": \"{{$guid}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "400 validación",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/pesajes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"material\": \"Papel\",\n  \"pesoBruto\": 2,\n  \"tara\": 3,\n  \"claveCliente\": \"{{$guid}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Corregir",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"material\": \"Papel\",\n  \"pesoBruto\": 25,\n  \"tara\": 2,\n  \"claveCliente\": \"edicion\"\n}"
+        }
+      }
+    },
+    {
+      "name": "403 anular como operario",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"motivo\": \"Duplicado\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Cerrar ruta como supervisor",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/rutas/{{rutaId}}/cierre"
+      }
+    },
+    {
+      "name": "Omitir punto",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/rutas/{{rutaId}}/puntos/{{puntoId}}/omision",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"motivo\": \"Empresa cerrada\"\n}"
+        }
+      }
+    }
+  ]
+}
