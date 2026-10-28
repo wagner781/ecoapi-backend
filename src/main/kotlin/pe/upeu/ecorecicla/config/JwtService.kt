@@ -12,7 +12,9 @@ import java.time.Instant
 @Configuration
 class JwtService(@Value("\${eco.jwt-secret}") private val secret: String) {
     @Bean fun jwtDecoder(): JwtDecoder = NimbusJwtDecoder.withSecretKey(SecretKeySpec(secret.toByteArray(), "HmacSHA256")).macAlgorithm(MacAlgorithm.HS256).build().also {
-        it.setJwtValidator(JwtValidators.createDefaultWithIssuer("ecoapi"))
+        it.setJwtValidator(org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator(
+            JwtTimestampValidator(java.time.Duration.ZERO), JwtIssuerValidator("ecoapi")
+        ))
     }
     @Bean fun jwtEncoder(): JwtEncoder = NimbusJwtEncoder(ImmutableSecret(secret.toByteArray()))
     fun emitir(encoder: JwtEncoder, id: Long, username: String, privilegios: Set<String>): String {
