@@ -12,7 +12,7 @@ Con Docker Desktop activo: `docker compose up --build -d`. Levanta PostgreSQL 17
 
 Alternativa de desarrollo: `docker compose up -d db` y `./gradlew bootRun`. En Windows usa `gradlew.bat`. Variables: `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, `PORT`; las claves predeterminadas son exclusivamente de demostración. No publiques un `.env` ni uses estas claves en producción.
 
-Usuarios semilla: `operario1`, `supervisor1`, `admin` y `operario2`; contraseña `Eco2026*`. Los tres primeros son los del anexo. El segundo operario permite demostrar RN-02 con otro usuario del mismo rol. Al iniciar se crean 12 puntos en tres zonas, ruta abierta del día con seis puntos, ruta anterior cerrada y al menos 15 pesajes (uno de otro operario y uno anulado). Hay una ruta inicial del supervisor. En una base existente se agrega la semilla ajena faltante sin modificar la autoría de registros anteriores. Las fechas proceden del reloj real en America/Lima y no se reescriben rutas existentes.
+Usuarios semilla: `operario1`, `supervisor1`, `admin`, `operario2` y `auditor1`; contraseña `Eco2026*`. Los tres primeros son los del anexo. El segundo operario permite demostrar RN-02 con otro usuario del mismo rol. Al iniciar se crean 12 puntos en tres zonas, ruta abierta del día con seis puntos, ruta anterior cerrada y al menos 15 pesajes (uno de otro operario y uno anulado). Hay una ruta inicial del supervisor. En una base existente se agrega la semilla ajena faltante sin modificar la autoría de registros anteriores. Las fechas proceden del reloj real en America/Lima y no se reescriben rutas existentes.
 
 ## Contrato `/api/v1`
 
@@ -41,7 +41,7 @@ Usuarios semilla: `operario1`, `supervisor1`, `admin` y `operario2`; contraseña
 | PUT/DELETE `/roles/{nombre}` | PUNTO_GESTIONAR | 200 modificación / 204 si no hay usuarios asignados |
 | GET `/privilegios` | PUNTO_GESTIONAR | 200 página de privilegios configurados |
 
-Login: `{"usuario":"operario1","password":"Eco2026*"}`. Pesaje: `{"rutaId":1,"puntoId":1,"material":"Papel","pesoBruto":20,"tara":2,"observacion":null,"claveCliente":"uuid-estable"}`. No se envía `pesoNeto`. Anular y omitir reciben `{"motivo":"Empresa cerrada"}`. Crear punto recibe razón social, dirección, zona y material habitual. Asignar ruta recibe `usuarioId`, fecha ISO y `puntoIds` en orden de visita.
+Login: `{"usuario":"operario1","password":"Eco2026*"}`. Pesaje: `{"rutaId":1,"puntoId":1,"material":"Papel","pesoBruto":20,"tara":2,"observacion":null,"claveCliente":"uuid-estable","humedadEstimada":12.75}`. No se envía `pesoNeto`. Anular y omitir reciben `{"motivo":"Empresa cerrada"}`. Crear punto recibe razón social, dirección, zona y material habitual. Asignar ruta recibe `usuarioId`, fecha ISO y `puntoIds` en orden de visita.
 
 Los listados usan `{contenido,pagina,tamanio,totalElementos,totalPaginas,ultima}`. La ruta del día es un recurso compuesto singular: su lista ordenada de puntos no es un listado paginado. Todos los errores usan `{timestamp,status,error,message,path,validationErrors}`. 400 indica campo inválido; 401 exige login; 403 mantiene la sesión; 404 recurso inexistente; 409 regla incumplida; 500 fallo interno sin exponer detalles. Tamaño permitido 1–100, página desde cero.
 
@@ -55,11 +55,11 @@ Las rutas son únicas por usuario/fecha desde el servicio. La asignación requie
 
 ## Verificar y defender
 
-`./gradlew build` ejecuta pruebas y genera el JAR. Con la API activa, `npm run test:api` ejecuta 26 peticiones contra PostgreSQL real; añade un pesaje de prueba y luego lo anula. Al terminar exporta las peticiones y respuestas observadas a `api/EcoAPI.postman_collection.json`, sin tokens válidos. Es la exportación del cliente Node.js utilizado para probar, importable en Postman; las variables de login, ID y clave de creación permiten repetir el recorrido. No se presenta como una exportación manual realizada desde Postman.
+`./gradlew build` ejecuta pruebas y genera el JAR. Con la API activa, `npm run test:api` ejecuta 35 peticiones contra PostgreSQL real; añade un pesaje de prueba y luego lo anula. Al terminar exporta las peticiones y respuestas observadas a `api/EcoAPI.postman_collection.json`, sin tokens válidos. Es la exportación del cliente Node.js utilizado para probar, importable en Postman; las variables de login, ID y clave de creación permiten repetir el recorrido. No se presenta como una exportación manual realizada desde Postman.
 
 Paquetes: `config` (JWT, seguridad, errores, semillas), `seguridad` (usuario y matriz), `dominio` (entidades), `repositorio` (JDBC), `servicio` (RN y transacciones), `web/dto` (contrato). Consulta [la guía de defensa](docs/DEFENSA.md).
 
-Git: bootstrap compilable en main; funcionalidades desde develop y PR con merge commit, sin squash. El bootstrap es la única excepción inicial necesaria para crear las ramas. No se fabrica desarrollo en fechas anteriores ni una rama de solicitud de cambio sin conocer la asignada. Revisa `git log --graph --oneline --all`.
+Git: bootstrap compilable en main; funcionalidades desde develop y PR con merge commit, sin squash. El bootstrap es la única excepción inicial necesaria para crear las ramas. Las cuatro SC se implementan por solicitud del usuario para practicar, sin afirmar asignacion docente ni desarrollo en fechas anteriores. Revisa `git log --graph --oneline --all`.
 
 SC-B agrega `auditor1 / Eco2026*` (AUDITOR), con PUNTO_LEER y PESAJE_LEER exclusivamente. Puede consultar perfil, padron y pesajes; no gestionar ni escribir. Los privilegios se configuran en Rol y se guardan por rol en PostgreSQL. La suite ahora incluye AuditorTest y la coleccion exportada contiene las pruebas reales del auditor.
 
