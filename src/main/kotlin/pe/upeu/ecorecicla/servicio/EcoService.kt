@@ -28,6 +28,7 @@ class EcoService(private val repo: EcoRepository) {
         // La clave estable hace seguro reintentar si el servidor guardo pero se perdio la respuesta.
         repo.porClave(user,b.claveCliente)?.let { return it }
         abierta(r)
+        ReglasPesaje.validarHumedad(b.humedadEstimada)
         val neto=ReglasPesaje.calcularNeto(b.pesoBruto,b.tara)
         if(repo.puntosRuta(r.id).none { it.id==b.puntoId }) throw Fallo(404,"Punto fuera de la ruta")
         return repo.crear(b,user,OffsetDateTime.now(zona).toString(),neto)
@@ -39,8 +40,9 @@ class EcoService(private val repo: EcoRepository) {
         if(!supervisor && (p.operarioId!=user || OffsetDateTime.parse(p.fechaHora).atZoneSameInstant(zona).toLocalDate()!=hoy())) throw Fallo(403,"Solo puede corregir sus pesajes del mismo dia")
         if(p.anulado) throw Fallo(409,"El pesaje esta anulado")
         if(b.rutaId!=p.rutaId || b.puntoId!=p.puntoId) throw Fallo(400,"No se puede mover un pesaje de ruta o punto")
+        ReglasPesaje.validarHumedad(b.humedadEstimada)
         val neto=ReglasPesaje.calcularNeto(b.pesoBruto,b.tara)
-        repo.db.update("UPDATE pesaje SET material=?,peso_bruto=?,tara=?,peso_neto=?,observacion=? WHERE id=?",b.material,b.pesoBruto,b.tara,neto,b.observacion,id)
+        repo.db.update("UPDATE pesaje SET material=?,peso_bruto=?,tara=?,peso_neto=?,observacion=?,humedad_estimada=? WHERE id=?",b.material,b.pesoBruto,b.tara,neto,b.observacion,b.humedadEstimada,id)
         return repo.pesaje(id)!!
     }
     @Transactional

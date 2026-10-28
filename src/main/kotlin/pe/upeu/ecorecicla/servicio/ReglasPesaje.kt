@@ -5,6 +5,10 @@ import java.math.BigDecimal
 
 /** Regla unica para peticiones y semillas; el repositorio solo persiste el resultado. */
 object ReglasPesaje {
+    fun validarHumedad(valor: Double?) {
+        if(valor!=null && (!valor.isFinite() || valor<0 || valor>100 || BigDecimal.valueOf(valor).stripTrailingZeros().scale()>2))
+            throw Fallo(400,"Datos invalidos",mapOf("humedadEstimada" to "Usa un porcentaje de 0 a 100 con hasta 2 decimales"))
+    }
     fun calcularNeto(bruto: Double, tara: Double): Double {
         val campos=mutableMapOf<String,String>()
         fun decimal(valor: Double,campo: String): BigDecimal? {

@@ -33,3 +33,4 @@ CREATE TABLE IF NOT EXISTS pesaje (
  CHECK(peso_bruto>0 AND tara>=0 AND peso_neto>0),
  FOREIGN KEY(ruta_id,punto_id) REFERENCES ruta_punto(ruta_id,punto_id)
 );
+ALTER TABLE pesaje ADD COLUMN IF NOT EXISTS humedad_estimada NUMERIC(5,2) CHECK(humedad_estimada>=0 AND humedad_estimada<=100);
