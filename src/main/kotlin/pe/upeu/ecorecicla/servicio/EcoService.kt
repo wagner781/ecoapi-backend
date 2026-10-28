@@ -12,22 +12,25 @@ import java.time.*
 class EcoService(private val repo: EcoRepository) {
     private val zona=ZoneId.of("America/Lima")
     fun hoy(): LocalDate = LocalDate.now(zona)
+    @Transactional(readOnly=true)
+    fun consultarRuta(id: Long,user: Long,global: Boolean): Ruta {
+        val r=repo.ruta(id) ?: throw Fallo(404,"Ruta inexistente")
+        acceso(r,user,global)
+        return r.copy(puntos=repo.puntosRuta(id))
+    }
     private fun ruta(id: Long): Ruta = repo.ruta(id,true) ?: throw Fallo(404,"Ruta inexistente")
     // PESAJE_ANULAR distingue a quien puede corregir cualquier pesaje sin comparar roles.
     private fun acceso(r: Ruta, user: Long, supervisor: Boolean) { if(r.usuarioId!=user && !supervisor) throw Fallo(403,"Ruta asignada a otro usuario") }
     private fun abierta(r: Ruta) { if(r.cerrada) throw Fallo(409,"La ruta ya esta cerrada") }
-    private fun validar(b: PesajePeticion) {
-        if(!b.pesoBruto.isFinite() || !b.tara.isFinite() || b.pesoBruto<=b.tara || b.tara<0)
-            throw Fallo(400,"Datos invalidos",mapOf("tara" to "La tara debe ser no negativa y menor que el peso bruto"))
-    }
     @Transactional
     fun crear(b: PesajePeticion, user: Long, supervisor: Boolean): Pesaje {
         val r=ruta(b.rutaId); acceso(r,user,supervisor)
         // La clave estable hace seguro reintentar si el servidor guardo pero se perdio la respuesta.
         repo.porClave(user,b.claveCliente)?.let { return it }
-        abierta(r); validar(b)
+        abierta(r)
+        val neto=ReglasPesaje.calcularNeto(b.pesoBruto,b.tara)
         if(repo.puntosRuta(r.id).none { it.id==b.puntoId }) throw Fallo(404,"Punto fuera de la ruta")
-        return repo.crear(b,user,OffsetDateTime.now(zona).toString())
+        return repo.crear(b,user,OffsetDateTime.now(zona).toString(),neto)
     }
     @Transactional
     fun corregir(id: Long, b: PesajePeticion, user: Long, supervisor: Boolean): Pesaje {
@@ -36,14 +39,14 @@ class EcoService(private val repo: EcoRepository) {
         if(!supervisor && (p.operarioId!=user || OffsetDateTime.parse(p.fechaHora).atZoneSameInstant(zona).toLocalDate()!=hoy())) throw Fallo(403,"Solo puede corregir sus pesajes del mismo dia")
         if(p.anulado) throw Fallo(409,"El pesaje esta anulado")
         if(b.rutaId!=p.rutaId || b.puntoId!=p.puntoId) throw Fallo(400,"No se puede mover un pesaje de ruta o punto")
-        validar(b)
-        repo.db.update("UPDATE pesaje SET material=?,peso_bruto=?,tara=?,peso_neto=?,observacion=? WHERE id=?",b.material,b.pesoBruto,b.tara,b.pesoBruto-b.tara,b.observacion,id)
+        val neto=ReglasPesaje.calcularNeto(b.pesoBruto,b.tara)
+        repo.db.update("UPDATE pesaje SET material=?,peso_bruto=?,tara=?,peso_neto=?,observacion=? WHERE id=?",b.material,b.pesoBruto,b.tara,neto,b.observacion,id)
         return repo.pesaje(id)!!
     }
     @Transactional
     fun anular(id: Long, motivo: String) {
         val p=repo.pesaje(id) ?: throw Fallo(404,"Pesaje inexistente")
-        abierta(ruta(p.rutaId))
+        ruta(p.rutaId) // Serializa la anulacion con el cierre; RN-01 solo limita crear/corregir.
         repo.db.update("UPDATE pesaje SET anulado=TRUE,motivo_anulacion=? WHERE id=?",motivo,id)
     }
     @Transactional
@@ -65,11 +68,41 @@ class EcoService(private val repo: EcoRepository) {
         return repo.punto(id)!!
     }
     @Transactional
-    fun asignar(b: RutaPeticion): Ruta {
-        if(b.puntoIds.distinct().size!=b.puntoIds.size) throw Fallo(400,"No se permiten puntos repetidos")
-        if(repo.db.queryForObject("SELECT COUNT(*) FROM usuario WHERE id=?",Long::class.java,b.usuarioId)==0L) throw Fallo(404,"Usuario inexistente")
+    fun editarPunto(id: Long,b: PuntoPeticion): Punto {
+        if(repo.db.update("UPDATE punto SET razon_social=?,direccion=?,zona=?,material_habitual=? WHERE id=?",b.razonSocial,b.direccion,b.zona,b.materialHabitual,id)==0) throw Fallo(404,"Punto inexistente")
+        return repo.punto(id)!!
+    }
+    @Transactional
+    fun eliminarPunto(id: Long) {
+        if(repo.punto(id)==null) throw Fallo(404,"Punto inexistente")
+        if(repo.db.queryForObject("SELECT COUNT(*) FROM ruta_punto WHERE punto_id=?",Long::class.java,id)!!>0) throw Fallo(409,"El punto tiene rutas asignadas; se conserva su historial")
+        repo.db.update("DELETE FROM punto WHERE id=?",id)
+    }
+    private fun validarAsignacion(b: RutaPeticion,id: Long?=null) {
+        if(b.puntoIds.isEmpty()) throw Fallo(400,"Datos invalidos",mapOf("puntoIds" to "Seleccione al menos un punto"))
+        if(b.puntoIds.distinct().size!=b.puntoIds.size) throw Fallo(400,"Datos invalidos",mapOf("puntoIds" to "No se permiten puntos repetidos"))
+        val usuarios=repo.db.queryForList("SELECT id FROM usuario WHERE id=? FOR UPDATE",Long::class.java,b.usuarioId)
+        if(usuarios.isEmpty()) throw Fallo(404,"Usuario inexistente")
+        val permitido=repo.db.queryForObject("SELECT COUNT(*) FROM usuario u JOIN rol_privilegio rp ON rp.rol=u.rol WHERE u.id=? AND u.activo AND rp.privilegio='PESAJE_CREAR'",Long::class.java,b.usuarioId)!!>0
+        if(!permitido) throw Fallo(400,"Datos invalidos",mapOf("usuarioId" to "Debe ser un usuario activo con PESAJE_CREAR"))
+        if(repo.delDia(b.usuarioId,b.fecha)?.let { it.id!=id }==true) throw Fallo(409,"El usuario ya tiene una ruta para esa fecha")
         b.puntoIds.forEach { if(repo.punto(it)==null) throw Fallo(404,"Punto inexistente") }
+    }
+    @Transactional
+    fun asignar(b: RutaPeticion): Ruta {
+        validarAsignacion(b)
         val id=repo.insertar("INSERT INTO ruta(fecha,usuario_id,cerrada) VALUES (?,?,FALSE)",b.fecha,b.usuarioId)
+        b.puntoIds.forEachIndexed { i,p -> repo.db.update("INSERT INTO ruta_punto(ruta_id,punto_id,secuencia) VALUES (?,?,?)",id,p,i+1) }
+        return repo.ruta(id)!!.copy(puntos=repo.puntosRuta(id))
+    }
+    @Transactional
+    fun editarAsignacion(id: Long,b: RutaPeticion): Ruta {
+        val r=ruta(id); abierta(r); validarAsignacion(b,id)
+        val pesajes=repo.db.queryForObject("SELECT COUNT(*) FROM pesaje WHERE ruta_id=?",Long::class.java,id)!!
+        val omisiones=repo.puntosRuta(id).any { !it.motivoOmision.isNullOrBlank() }
+        if(pesajes>0 || omisiones) throw Fallo(409,"No se modifica la planificacion de una ruta con pesajes u omisiones")
+        repo.db.update("UPDATE ruta SET usuario_id=?,fecha=? WHERE id=?",b.usuarioId,b.fecha,id)
+        repo.db.update("DELETE FROM ruta_punto WHERE ruta_id=?",id)
         b.puntoIds.forEachIndexed { i,p -> repo.db.update("INSERT INTO ruta_punto(ruta_id,punto_id,secuencia) VALUES (?,?,?)",id,p,i+1) }
         return repo.ruta(id)!!.copy(puntos=repo.puntosRuta(id))
     }

@@ -11,6 +11,14 @@ import org.springframework.test.web.servlet.post
 @SpringBootTest
 @AutoConfigureMockMvc
 class SeguridadTest(@Autowired val mvc: MockMvc) {
+    @Test fun `la expiracion comunicada coincide con el claim firmado`() {
+        val r=mvc.post("/api/v1/auth/login") { contentType=org.springframework.http.MediaType.APPLICATION_JSON; content="""{"usuario":"operario1","password":"Eco2026*"}""" }.andExpect { status { isOk() } }.andReturn()
+        val json=com.fasterxml.jackson.module.kotlin.jacksonObjectMapper()
+        val body=json.readTree(r.response.contentAsString)
+        val claims=json.readTree(java.util.Base64.getUrlDecoder().decode(body["token"].asText().split('.')[1]))
+        org.junit.jupiter.api.Assertions.assertEquals(claims["exp"].asLong(),body["expiresAt"].asLong())
+        org.junit.jupiter.api.Assertions.assertEquals(3600,claims["exp"].asLong()-claims["iat"].asLong())
+    }
     @Test fun `rechaza peticion anonima y token alterado`() {
         mvc.get("/api/v1/me").andExpect { status { isUnauthorized() }; jsonPath("$.status") { value(401) } }
         mvc.get("/api/v1/me") { header("Authorization","Bearer alterado") }.andExpect { status { isUnauthorized() } }

@@ -12,7 +12,7 @@ Con Docker Desktop activo: `docker compose up --build -d`. Levanta PostgreSQL 17
 
 Alternativa de desarrollo: `docker compose up -d db` y `./gradlew bootRun`. En Windows usa `gradlew.bat`. Variables: `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, `PORT`; las claves predeterminadas son exclusivamente de demostración. No publiques un `.env` ni uses estas claves en producción.
 
-Usuarios semilla: `operario1`, `supervisor1`, `admin`; contraseña `Eco2026*`. Al iniciar se crean 12 puntos en tres zonas, ruta abierta del día con seis puntos, ruta anterior cerrada y 15 pesajes (uno ajeno y uno anulado). Se agrega una ruta vacía del supervisor para su pantalla. Las fechas proceden del reloj real en America/Lima y no se reescriben rutas existentes. Si reinicias al día siguiente aparecen las nuevas rutas de demostración.
+Usuarios semilla: `operario1`, `supervisor1`, `admin` y `operario2`; contraseña `Eco2026*`. Los tres primeros son los del anexo. El segundo operario permite demostrar RN-02 con otro usuario del mismo rol. Al iniciar se crean 12 puntos en tres zonas, ruta abierta del día con seis puntos, ruta anterior cerrada y al menos 15 pesajes (uno de otro operario y uno anulado). Hay una ruta inicial del supervisor. En una base existente se agrega la semilla ajena faltante sin modificar la autoría de registros anteriores. Las fechas proceden del reloj real en America/Lima y no se reescriben rutas existentes.
 
 ## Contrato `/api/v1`
 
@@ -21,6 +21,8 @@ Usuarios semilla: `operario1`, `supervisor1`, `admin`; contraseña `Eco2026*`. A
 | POST `/auth/login` | Público | 200 sesión |
 | GET `/me` | Autenticado | 200 perfil |
 | GET `/rutas/dia?fecha=YYYY-MM-DD` | PUNTO_LEER | 200 ruta asignada y puntos ordenados |
+| GET `/rutas?fecha=YYYY-MM-DD&pagina=0&tamanio=20` | PUNTO_LEER | 200 página de rutas; operario solo propias |
+| GET `/rutas/{id}` | PUNTO_LEER | 200; propias, o consulta global con RUTA_CERRAR/PUNTO_GESTIONAR |
 | GET `/puntos?zona=Norte&pagina=0&tamanio=20` | PUNTO_LEER | 200 página |
 | GET `/puntos/{id}/pesajes?pagina=0&tamanio=20` | PESAJE_LEER | 200 página, reciente primero |
 | POST `/pesajes` | PESAJE_CREAR | 201 pesaje + Location |
@@ -29,7 +31,15 @@ Usuarios semilla: `operario1`, `supervisor1`, `admin`; contraseña `Eco2026*`. A
 | PUT `/rutas/{id}/puntos/{puntoId}/omision` | PESAJE_CREAR | 204 |
 | POST `/rutas/{id}/cierre` | RUTA_CERRAR | 200 ruta cerrada |
 | POST `/puntos` | PUNTO_GESTIONAR | 201 punto |
+| PUT `/puntos/{id}` | PUNTO_GESTIONAR | 200 punto actualizado |
+| DELETE `/puntos/{id}` | PUNTO_GESTIONAR | 204; 409 si conserva rutas/historial |
 | POST `/rutas` | PUNTO_GESTIONAR | 201 ruta asignada |
+| PUT `/rutas/{id}` | PUNTO_GESTIONAR | 200; solo planificación abierta sin registros |
+| GET/POST `/usuarios` | PUNTO_GESTIONAR | 200 página / 201 cuenta |
+| PUT/DELETE `/usuarios/{id}` | PUNTO_GESTIONAR | 200 modificación / 204 desactivación lógica |
+| GET/POST `/roles` | PUNTO_GESTIONAR | 200 página / 201 rol |
+| PUT/DELETE `/roles/{nombre}` | PUNTO_GESTIONAR | 200 modificación / 204 si no hay usuarios asignados |
+| GET `/privilegios` | PUNTO_GESTIONAR | 200 página de privilegios configurados |
 
 Login: `{"usuario":"operario1","password":"Eco2026*"}`. Pesaje: `{"rutaId":1,"puntoId":1,"material":"Papel","pesoBruto":20,"tara":2,"observacion":null,"claveCliente":"uuid-estable"}`. No se envía `pesoNeto`. Anular y omitir reciben `{"motivo":"Empresa cerrada"}`. Crear punto recibe razón social, dirección, zona y material habitual. Asignar ruta recibe `usuarioId`, fecha ISO y `puntoIds` en orden de visita.
 
@@ -37,11 +47,15 @@ Los listados usan `{contenido,pagina,tamanio,totalElementos,totalPaginas,ultima}
 
 ## Roles
 
-Operario: PUNTO_LEER, PESAJE_LEER, PESAJE_CREAR y PESAJE_EDITAR (solo propios del día). Supervisor: los anteriores más PESAJE_ANULAR y RUTA_CERRAR. Administrador: PUNTO_LEER, PESAJE_LEER, PUNTO_GESTIONAR; no registra ni edita pesajes. El alcance administrativo obligatorio del contrato es crear puntos y asignar rutas; no se añade una pantalla de administración de usuarios no definida por sus endpoints.
+Operario: PUNTO_LEER, PESAJE_LEER, PESAJE_CREAR y PESAJE_EDITAR (solo propios del día). Supervisor: los anteriores más PESAJE_ANULAR y RUTA_CERRAR. Administrador: PUNTO_LEER, PESAJE_LEER, PUNTO_GESTIONAR; no crea, edita ni anula pesajes y no cierra rutas. La gestión de usuarios y roles descrita en 3.3 se implementa usando PUNTO_GESTIONAR, sin comparar nombres de rol en los controladores ni añadir privilegios de pesajes al administrador.
+
+Usuario de gestión: `{usuario,nombre,rol,password,activo}`; password es obligatorio al crear y opcional al editar, de 8 caracteres mínimo y 72 bytes UTF-8 máximo. Rol: `{nombre,privilegios}` con identificador en mayúsculas y solo privilegios existentes. El último gestor activo no puede eliminar su acceso. Cambios de cuenta o privilegios incrementan `version_sesion` y hacen que sus tokens anteriores reciban 401. El token sigue vigente una hora y no se renueva; `expiresAt` comunica su expiración exacta en segundos Unix.
+
+Las rutas son únicas por usuario/fecha desde el servicio. La asignación requiere un usuario activo con PESAJE_CREAR. Una planificación con pesajes u omisiones se conserva. RN-01 bloquea crear y corregir en rutas cerradas; la anulación autorizada sigue siendo lógica y no reabre la ruta.
 
 ## Verificar y defender
 
-`./gradlew build` ejecuta pruebas y genera el JAR. Con la API activa, `npm run test:api` verifica HTTP y PostgreSQL reales; añade un pesaje de prueba y luego lo anula, conservando la trazabilidad. `api/EcoAPI.postman_collection.json` contiene peticiones para importar en Postman.
+`./gradlew build` ejecuta pruebas y genera el JAR. Con la API activa, `npm run test:api` ejecuta 26 peticiones contra PostgreSQL real; añade un pesaje de prueba y luego lo anula. Al terminar exporta las peticiones y respuestas observadas a `api/EcoAPI.postman_collection.json`, sin tokens válidos. Es la exportación del cliente Node.js utilizado para probar, importable en Postman; las variables de login, ID y clave de creación permiten repetir el recorrido. No se presenta como una exportación manual realizada desde Postman.
 
 Paquetes: `config` (JWT, seguridad, errores, semillas), `seguridad` (usuario y matriz), `dominio` (entidades), `repositorio` (JDBC), `servicio` (RN y transacciones), `web/dto` (contrato). Consulta [la guía de defensa](docs/DEFENSA.md).
 

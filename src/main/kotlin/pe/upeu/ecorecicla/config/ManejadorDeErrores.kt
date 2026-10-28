@@ -10,6 +10,10 @@ import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import java.time.LocalDateTime
+import org.springframework.web.servlet.resource.NoResourceFoundException
+import org.springframework.web.servlet.NoHandlerFoundException
+import org.springframework.web.HttpRequestMethodNotSupportedException
+import org.springframework.dao.DataIntegrityViolationException
 
 data class ErrorRespuesta(val timestamp: String = LocalDateTime.now().toString(), val status: Int, val error: String, val message: String, val path: String, val validationErrors: Map<String, String> = emptyMap())
 class Fallo(val status: Int, override val message: String, val campos: Map<String, String> = emptyMap()) : RuntimeException(message)
@@ -21,6 +25,9 @@ class ManejadorDeErrores {
         val (status, message, campos) = when (e) {
             is Fallo -> Triple(e.status, e.message, e.campos)
             is AccessDeniedException -> Triple(403, "No posee el privilegio requerido", emptyMap())
+            is NoResourceFoundException, is NoHandlerFoundException -> Triple(404, "Recurso inexistente", emptyMap())
+            is HttpRequestMethodNotSupportedException -> Triple(405, "Metodo HTTP no permitido para este recurso", emptyMap())
+            is DataIntegrityViolationException -> Triple(409, "El cambio entra en conflicto con registros existentes", emptyMap())
             is MethodArgumentNotValidException -> Triple(400, "Datos invalidos", e.bindingResult.fieldErrors.associate { it.field to (it.defaultMessage ?: "Invalido") })
             is HttpMessageNotReadableException, is MethodArgumentTypeMismatchException -> Triple(400, "Formato de peticion invalido", emptyMap())
             else -> Triple(500, "Error interno del servicio", emptyMap())
