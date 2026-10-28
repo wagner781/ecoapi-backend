@@ -17,6 +17,7 @@ import java.time.LocalDate
 @RequestMapping("/api/v1")
 class EcoController(private val repo: EcoRepository, private val service: EcoService) {
     private fun supervisor(jwt: Jwt) = jwt.getClaimAsStringList("privilegios").contains("PESAJE_ANULAR")
+    private fun lecturaGlobal(jwt: Jwt)=jwt.getClaimAsStringList("privilegios").any { it=="RUTA_CERRAR" || it=="PUNTO_GESTIONAR" }
     private fun <T> pagina(p: Int,t: Int, consulta: () -> Pair<List<T>,Long>): Pagina<T> {
         if(p<0 || t !in 1..100) throw Fallo(400,"Paginacion invalida",mapOf("pagina" to "Pagina >= 0 y tamanio entre 1 y 100"))
         val (list,total)=consulta(); val pages=((total+t-1)/t).toInt()
@@ -24,6 +25,10 @@ class EcoController(private val repo: EcoRepository, private val service: EcoSer
     }
     @GetMapping("/rutas/dia") @PreAuthorize("hasAuthority('PUNTO_LEER')")
     fun dia(@AuthenticationPrincipal jwt: Jwt, @RequestParam(required=false) fecha: LocalDate?) = repo.delDia(jwt.subject.toLong(),fecha ?: service.hoy()) ?: throw Fallo(404,"No hay ruta asignada para esta fecha")
+    @GetMapping("/rutas") @PreAuthorize("hasAuthority('PUNTO_LEER')")
+    fun rutas(@AuthenticationPrincipal jwt: Jwt,@RequestParam(required=false) fecha: LocalDate?,@RequestParam(defaultValue="0") pagina: Int,@RequestParam(defaultValue="20") tamanio: Int)=pagina(pagina,tamanio) { repo.rutas(fecha ?: service.hoy(),if(lecturaGlobal(jwt)) null else jwt.subject.toLong(),pagina,tamanio) }
+    @GetMapping("/rutas/{id}") @PreAuthorize("hasAuthority('PUNTO_LEER')")
+    fun ruta(@AuthenticationPrincipal jwt: Jwt,@PathVariable id: Long)=service.consultarRuta(id,jwt.subject.toLong(),lecturaGlobal(jwt))
     @GetMapping("/puntos") @PreAuthorize("hasAuthority('PUNTO_LEER')")
     fun puntos(@RequestParam(required=false) zona: String?, @RequestParam(defaultValue="0") pagina: Int,@RequestParam(defaultValue="20") tamanio: Int) = pagina(pagina,tamanio) { repo.puntos(zona,pagina,tamanio) }
     @GetMapping("/puntos/{id}/pesajes") @PreAuthorize("hasAuthority('PESAJE_LEER')")
@@ -45,6 +50,12 @@ class EcoController(private val repo: EcoRepository, private val service: EcoSer
     fun cerrar(@PathVariable id: Long) = service.cerrar(id)
     @PostMapping("/puntos") @PreAuthorize("hasAuthority('PUNTO_GESTIONAR')")
     fun punto(@Valid @RequestBody b: PuntoPeticion): ResponseEntity<pe.upeu.ecorecicla.dominio.Punto> { val p=service.crearPunto(b); return ResponseEntity.created(URI.create("/api/v1/puntos/${p.id}")).body(p) }
+    @PutMapping("/puntos/{id}") @PreAuthorize("hasAuthority('PUNTO_GESTIONAR')")
+    fun editarPunto(@PathVariable id: Long,@Valid @RequestBody b: PuntoPeticion)=service.editarPunto(id,b)
+    @DeleteMapping("/puntos/{id}") @PreAuthorize("hasAuthority('PUNTO_GESTIONAR')")
+    fun eliminarPunto(@PathVariable id: Long): ResponseEntity<Void> { service.eliminarPunto(id); return ResponseEntity.noContent().build() }
     @PostMapping("/rutas") @PreAuthorize("hasAuthority('PUNTO_GESTIONAR')")
     fun asignar(@Valid @RequestBody b: RutaPeticion): ResponseEntity<pe.upeu.ecorecicla.dominio.Ruta> { val r=service.asignar(b); return ResponseEntity.created(URI.create("/api/v1/rutas/${r.id}")).body(r) }
+    @PutMapping("/rutas/{id}") @PreAuthorize("hasAuthority('PUNTO_GESTIONAR')")
+    fun editarAsignacion(@PathVariable id: Long,@Valid @RequestBody b: RutaPeticion)=service.editarAsignacion(id,b)
 }
