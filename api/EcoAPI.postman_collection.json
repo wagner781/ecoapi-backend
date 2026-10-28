@@ -80,7 +80,7 @@
             "url": "{{baseUrl}}/me"
           },
           "code": 401,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:16.967204952\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:46.514735377\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -129,7 +129,7 @@
             }
           },
           "code": 401,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:17.667965779\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Credenciales incorrectas\",\n  \"path\": \"/api/v1/auth/login\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.113759650\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Credenciales incorrectas\",\n  \"path\": \"/api/v1/auth/login\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -179,7 +179,7 @@
             }
           },
           "code": 200,
-          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"operario1\",\n  \"nombre\": \"operario1\",\n  \"rol\": \"OPERARIO\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PESAJE_CREAR\",\n    \"PESAJE_EDITAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 1,\n  \"expiresAt\": 1793230517\n}"
+          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"operario1\",\n  \"nombre\": \"operario1\",\n  \"rol\": \"OPERARIO\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PESAJE_CREAR\",\n    \"PESAJE_EDITAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 1,\n  \"expiresAt\": 1793230787\n}"
         }
       ]
     },
@@ -229,7 +229,7 @@
             }
           },
           "code": 200,
-          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"supervisor1\",\n  \"nombre\": \"supervisor1\",\n  \"rol\": \"SUPERVISOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PESAJE_CREAR\",\n    \"PESAJE_EDITAR\",\n    \"PESAJE_ANULAR\",\n    \"RUTA_CERRAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 2,\n  \"expiresAt\": 1793230517\n}"
+          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"supervisor1\",\n  \"nombre\": \"supervisor1\",\n  \"rol\": \"SUPERVISOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PESAJE_CREAR\",\n    \"PESAJE_EDITAR\",\n    \"PESAJE_ANULAR\",\n    \"RUTA_CERRAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 2,\n  \"expiresAt\": 1793230787\n}"
         }
       ]
     },
@@ -279,7 +279,7 @@
             }
           },
           "code": 200,
-          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"admin\",\n  \"nombre\": \"admin\",\n  \"rol\": \"ADMINISTRADOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PUNTO_GESTIONAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 3,\n  \"expiresAt\": 1793230518\n}"
+          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"admin\",\n  \"nombre\": \"admin\",\n  \"rol\": \"ADMINISTRADOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PUNTO_GESTIONAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 3,\n  \"expiresAt\": 1793230787\n}"
         }
       ]
     },
@@ -329,7 +329,7 @@
             }
           },
           "code": 200,
-          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"auditor1\",\n  \"nombre\": \"auditor1\",\n  \"rol\": \"AUDITOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 6,\n  \"expiresAt\": 1793230518\n}"
+          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"auditor1\",\n  \"nombre\": \"auditor1\",\n  \"rol\": \"AUDITOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 6,\n  \"expiresAt\": 1793230787\n}"
         }
       ]
     },
@@ -476,7 +476,7 @@
             "url": "{{baseUrl}}/puntos/1/pesajes"
           },
           "code": 200,
-          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 22,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 21,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:14:08.479296452-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 18,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:58:13.511488279-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 16,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:40:09.394062600-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 1,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null\n    },\n    {\n      \"id\": 10,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:06-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 31,\n      \"tara\": 2,\n      \"pesoNeto\": 29,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null\n    },\n    {\n      \"id\": 4,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 20,\n  \"totalElementos\": 7,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
+          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 23,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:35:18.643176905-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 22,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 21,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:14:08.479296452-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 18,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:58:13.511488279-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 16,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:40:09.394062600-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 1,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null,\n      \"humedadEstimada\": 12.5\n    },\n    {\n      \"id\": 10,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:06-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 31,\n      \"tara\": 2,\n      \"pesoNeto\": 29,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null,\n      \"humedadEstimada\": 12.5\n    },\n    {\n      \"id\": 4,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null,\n      \"humedadEstimada\": 12.5\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 20,\n  \"totalElementos\": 8,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
         }
       ]
     },
@@ -525,7 +525,7 @@
             "url": "{{baseUrl}}/rutas/{{rutaId}}/cierre"
           },
           "code": 403,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.430682362\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/rutas/1/cierre\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.871239309\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/rutas/1/cierre\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -582,7 +582,7 @@
             }
           },
           "code": 403,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.457694924\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes/1\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.899931699\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes/1\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -631,7 +631,7 @@
             "url": "{{baseUrl}}/usuarios"
           },
           "code": 403,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.478221010\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/usuarios\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.921421837\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/usuarios\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -680,7 +680,7 @@
             "url": "{{baseUrl}}/me"
           },
           "code": 401,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.489158949\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.936887122\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -729,7 +729,7 @@
             "url": "{{baseUrl}}/me"
           },
           "code": 401,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.496093492\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.943970527\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -877,7 +877,7 @@
             "url": "{{baseUrl}}/rutas/{{rutaId}}/cierre"
           },
           "code": 403,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.537813489\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/rutas/1/cierre\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.989383106\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/rutas/1/cierre\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -926,7 +926,7 @@
             "url": "{{baseUrl}}/rutas/{{rutaId}}/cierre"
           },
           "code": 409,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.550456771\",\n  \"status\": 409,\n  \"error\": \"Conflict\",\n  \"message\": \"Faltan 2 puntos sin pesaje ni motivo de omision\",\n  \"path\": \"/api/v1/rutas/1/cierre\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.002453566\",\n  \"status\": 409,\n  \"error\": \"Conflict\",\n  \"message\": \"Faltan 2 puntos sin pesaje ni motivo de omision\",\n  \"path\": \"/api/v1/rutas/1/cierre\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -947,7 +947,7 @@
         "url": "{{baseUrl}}/pesajes",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 12.75\n}"
         }
       },
       "event": [
@@ -979,11 +979,11 @@
             "url": "{{baseUrl}}/pesajes",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 12.75\n}"
             }
           },
           "code": 403,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.605805250\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.059515289\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -1004,7 +1004,7 @@
         "url": "{{baseUrl}}/pesajes",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 12.75\n}"
         }
       },
       "event": [
@@ -1036,11 +1036,11 @@
             "url": "{{baseUrl}}/pesajes",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 12.75\n}"
             }
           },
           "code": 403,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.614809344\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.071923025\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -1061,7 +1061,7 @@
         "url": "{{baseUrl}}/pesajes",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 21,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 21,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 12.75\n}"
         }
       },
       "event": [
@@ -1093,11 +1093,68 @@
             "url": "{{baseUrl}}/pesajes",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 21,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 21,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 12.75\n}"
             }
           },
           "code": 400,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.629299569\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Datos invalidos\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {\n    \"tara\": \"La tara debe ser no negativa y menor que el peso bruto\"\n  }\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.085510519\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Datos invalidos\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {\n    \"tara\": \"La tara debe ser no negativa y menor que el peso bruto\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "400 POST /pesajes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_operario1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/pesajes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 101\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 400', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_operario1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pesajes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 101\n}"
+            }
+          },
+          "code": 400,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.163171882\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Datos invalidos\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {\n    \"humedadEstimada\": \"must be less than or equal to 100\"\n  }\n}"
         }
       ]
     },
@@ -1118,7 +1175,7 @@
         "url": "{{baseUrl}}/pesajes",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\"\n}"
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\",\n  \"humedadEstimada\": 12.75\n}"
         }
       },
       "event": [
@@ -1160,11 +1217,11 @@
             "url": "{{baseUrl}}/pesajes",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\"\n}"
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\",\n  \"humedadEstimada\": 12.75\n}"
             }
           },
           "code": 201,
-          "body": "{\n  \"id\": 23,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:35:18.643176905-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"pesoNeto\": 18,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null\n}"
+          "body": "{\n  \"id\": 24,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:39:48.179381313-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"pesoNeto\": 18,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null,\n  \"humedadEstimada\": 12.75\n}"
         }
       ]
     },
@@ -1185,7 +1242,7 @@
         "url": "{{baseUrl}}/pesajes",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\"\n}"
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\",\n  \"humedadEstimada\": 12.75\n}"
         }
       },
       "event": [
@@ -1218,16 +1275,16 @@
             "url": "{{baseUrl}}/pesajes",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\"\n}"
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\",\n  \"humedadEstimada\": 12.75\n}"
             }
           },
           "code": 201,
-          "body": "{\n  \"id\": 23,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:35:18.643176905-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"pesoNeto\": 18,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null\n}"
+          "body": "{\n  \"id\": 24,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:39:48.179381313-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"pesoNeto\": 18,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null,\n  \"humedadEstimada\": 12.75\n}"
         }
       ]
     },
     {
-      "name": "200 PUT /pesajes/23",
+      "name": "200 PUT /pesajes/24",
       "request": {
         "method": "PUT",
         "header": [
@@ -1243,7 +1300,7 @@
         "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"516cb5e2-9128-485d-9f9a-960c521a25f2\"\n}"
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"2f05b246-d4c4-4c9c-86c5-31b6393b22eb\",\n  \"humedadEstimada\": 20.5\n}"
         }
       },
       "event": [
@@ -1275,16 +1332,16 @@
             "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"516cb5e2-9128-485d-9f9a-960c521a25f2\"\n}"
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"2f05b246-d4c4-4c9c-86c5-31b6393b22eb\",\n  \"humedadEstimada\": 20.5\n}"
             }
           },
           "code": 200,
-          "body": "{\n  \"id\": 23,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:35:18.643176905-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"pesoNeto\": 22,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null\n}"
+          "body": "{\n  \"id\": 24,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:39:48.179381313-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"pesoNeto\": 22,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null,\n  \"humedadEstimada\": 20.5\n}"
         }
       ]
     },
     {
-      "name": "403 DELETE /pesajes/23",
+      "name": "403 DELETE /pesajes/24",
       "request": {
         "method": "DELETE",
         "header": [
@@ -1336,12 +1393,12 @@
             }
           },
           "code": 403,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.710372296\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes/23\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.239719977\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes/24\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
     {
-      "name": "204 DELETE /pesajes/23",
+      "name": "204 DELETE /pesajes/24",
       "request": {
         "method": "DELETE",
         "header": [
@@ -1442,7 +1499,7 @@
             "url": "{{baseUrl}}/puntos/1/pesajes?tamanio=100"
           },
           "code": 200,
-          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 23,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:35:18.643176905-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 22,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 21,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:14:08.479296452-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 18,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:58:13.511488279-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 16,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:40:09.394062600-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 1,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null\n    },\n    {\n      \"id\": 10,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:06-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 31,\n      \"tara\": 2,\n      \"pesoNeto\": 29,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null\n    },\n    {\n      \"id\": 4,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 100,\n  \"totalElementos\": 8,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
+          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 24,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:39:48.179381313-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": 20.5\n    },\n    {\n      \"id\": 23,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:35:18.643176905-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 22,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 21,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:14:08.479296452-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 18,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:58:13.511488279-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 16,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:40:09.394062600-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 1,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null,\n      \"humedadEstimada\": 12.5\n    },\n    {\n      \"id\": 10,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:06-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 31,\n      \"tara\": 2,\n      \"pesoNeto\": 29,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null,\n      \"humedadEstimada\": 12.5\n    },\n    {\n      \"id\": 4,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null,\n      \"humedadEstimada\": 12.5\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 100,\n  \"totalElementos\": 9,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
         }
       ]
     },
@@ -1491,7 +1548,7 @@
             "url": "{{baseUrl}}/puntos/9999999/pesajes"
           },
           "code": 404,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.754550466\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Punto inexistente\",\n  \"path\": \"/api/v1/puntos/9999999/pesajes\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.277187084\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Punto inexistente\",\n  \"path\": \"/api/v1/puntos/9999999/pesajes\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -1540,7 +1597,7 @@
             "url": "{{baseUrl}}/ruta-inexistente"
           },
           "code": 404,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.768671443\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Recurso inexistente\",\n  \"path\": \"/api/v1/ruta-inexistente\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.288071941\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Recurso inexistente\",\n  \"path\": \"/api/v1/ruta-inexistente\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -1736,7 +1793,7 @@
             "url": "{{baseUrl}}/usuarios"
           },
           "code": 403,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:35:18.823069294\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/usuarios\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.332417225\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/usuarios\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
