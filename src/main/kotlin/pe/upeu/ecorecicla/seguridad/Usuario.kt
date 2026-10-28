@@ -5,5 +5,6 @@ enum class Privilegio { PUNTO_LEER, PESAJE_LEER, PESAJE_CREAR, PESAJE_EDITAR, PE
 enum class Rol(val privilegios: Set<Privilegio>) {
     OPERARIO(setOf(Privilegio.PUNTO_LEER, Privilegio.PESAJE_LEER, Privilegio.PESAJE_CREAR, Privilegio.PESAJE_EDITAR)),
     SUPERVISOR(OPERARIO.privilegios + setOf(Privilegio.PESAJE_ANULAR, Privilegio.RUTA_CERRAR)),
-    ADMINISTRADOR(setOf(Privilegio.PUNTO_LEER, Privilegio.PESAJE_LEER, Privilegio.PUNTO_GESTIONAR))
+    ADMINISTRADOR(setOf(Privilegio.PUNTO_LEER, Privilegio.PESAJE_LEER, Privilegio.PUNTO_GESTIONAR)),
+    AUDITOR(setOf(Privilegio.PUNTO_LEER, Privilegio.PESAJE_LEER))
 }
