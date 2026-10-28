@@ -60,3 +60,5 @@ Las rutas son únicas por usuario/fecha desde el servicio. La asignación requie
 Paquetes: `config` (JWT, seguridad, errores, semillas), `seguridad` (usuario y matriz), `dominio` (entidades), `repositorio` (JDBC), `servicio` (RN y transacciones), `web/dto` (contrato). Consulta [la guía de defensa](docs/DEFENSA.md).
 
 Git: bootstrap compilable en main; funcionalidades desde develop y PR con merge commit, sin squash. El bootstrap es la única excepción inicial necesaria para crear las ramas. No se fabrica desarrollo en fechas anteriores ni una rama de solicitud de cambio sin conocer la asignada. Revisa `git log --graph --oneline --all`.
+
+SC-B agrega `auditor1 / Eco2026*` (AUDITOR), con PUNTO_LEER y PESAJE_LEER exclusivamente. Puede consultar perfil, padron y pesajes; no gestionar ni escribir. Los privilegios se configuran en Rol y se guardan por rol en PostgreSQL. La suite ahora incluye AuditorTest y la coleccion exportada contiene las pruebas reales del auditor.
