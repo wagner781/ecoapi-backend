@@ -82,4 +82,16 @@ class OperacionesTest(@Autowired val mvc: MockMvc,@Autowired val json: ObjectMap
         val p=repo.pesajes(r.puntos.first().id,0,100).first.first { it.rutaId==r.id }
         mvc.put("/api/v1/pesajes/${p.id}") { header("Authorization","Bearer ${token("supervisor1")}"); contentType=MediaType.APPLICATION_JSON; content=body(r.id,p.puntoId) }.andExpect { status { isConflict() } }
     }
+    @Test fun `supervisor puede anular en ruta cerrada sin habilitar correcciones`() {
+        val r=repo.delDia(ruta().usuarioId,service.hoy().minusDays(1))!!
+        val p=repo.pesajes(r.puntos.first().id,0,100).first.first { it.rutaId==r.id }
+        mvc.delete("/api/v1/pesajes/${p.id}") { header("Authorization","Bearer ${token("supervisor1")}"); contentType=MediaType.APPLICATION_JSON; content="""{"motivo":"Correccion de auditoria"}""" }.andExpect { status { isNoContent() } }
+        assertTrue(repo.pesaje(p.id)!!.anulado)
+        assertTrue(repo.ruta(r.id)!!.cerrada)
+    }
+    @Test fun `pesos fuera de precision generan 400 por campo y nunca 500 SQL`() {
+        val r=ruta()
+        mvc.post("/api/v1/pesajes") { header("Authorization","Bearer ${token("operario1")}"); contentType=MediaType.APPLICATION_JSON; content=body(r.id,r.puntos.first().id,bruto=1.0004,tara=1.0) }.andExpect { status { isBadRequest() }; jsonPath("$.validationErrors.pesoBruto") { isNotEmpty() } }
+        assertEquals(0.2,pe.upeu.ecorecicla.servicio.ReglasPesaje.calcularNeto(0.3,0.1))
+    }
 }

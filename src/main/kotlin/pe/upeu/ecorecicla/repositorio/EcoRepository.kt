@@ -32,9 +32,9 @@ class EcoRepository(val db: JdbcTemplate) {
     fun pesaje(id: Long): Pesaje? = db.query("$selectPesaje WHERE p.id=?",{r,_ -> pesaje(r)},id).firstOrNull()
     fun porClave(user: Long, clave: String): Pesaje? = db.query("$selectPesaje WHERE p.operario_id=? AND p.clave_cliente=?",{r,_ -> pesaje(r)},user,clave).firstOrNull()
     fun pesajes(punto: Long, pagina: Int, tamanio: Int): Pair<List<Pesaje>,Long> = db.query("$selectPesaje WHERE p.punto_id=? ORDER BY p.fecha_hora DESC,p.id DESC LIMIT ? OFFSET ?",{r,_ -> pesaje(r)},punto,tamanio,pagina.toLong()*tamanio) to db.queryForObject("SELECT COUNT(*) FROM pesaje WHERE punto_id=?",Long::class.java,punto)!!
-    fun crear(body: PesajePeticion, user: Long, fecha: String): Pesaje {
+    fun crear(body: PesajePeticion, user: Long, fecha: String, neto: Double): Pesaje {
         val id=insertar("""INSERT INTO pesaje(ruta_id,punto_id,fecha_hora,material,peso_bruto,tara,peso_neto,operario_id,observacion,clave_cliente)
-            VALUES (?,?,?,?,?,?,?,?,?,?)""",body.rutaId,body.puntoId,fecha,body.material,body.pesoBruto,body.tara,body.pesoBruto-body.tara,user,body.observacion,body.claveCliente)
+            VALUES (?,?,?,?,?,?,?,?,?,?)""",body.rutaId,body.puntoId,fecha,body.material,body.pesoBruto,body.tara,neto,user,body.observacion,body.claveCliente)
         return pesaje(id)!!
     }
 }

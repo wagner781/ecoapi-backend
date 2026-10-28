@@ -37,7 +37,7 @@ class Semillas(private val db: JdbcTemplate, private val passwords: PasswordEnco
                     val punto=if(cerrada) puntos[i%6] else puntos[i]
                     val user=if(i==1) supervisor else operario
                     val b=pe.upeu.ecorecicla.web.dto.PesajePeticion(ruta,punto,"Papel",25.0+i,2.0,"Semilla de demostracion","semilla-$ruta-$i")
-                    val p=repo.crear(b,user,fecha.atTime(8,i).atZone(java.time.ZoneId.of("America/Lima")).toOffsetDateTime().toString())
+                    val p=repo.crear(b,user,fecha.atTime(8,i).atZone(java.time.ZoneId.of("America/Lima")).toOffsetDateTime().toString(),pe.upeu.ecorecicla.servicio.ReglasPesaje.calcularNeto(b.pesoBruto,b.tara))
                     if(cerrada && i==11) db.update("UPDATE pesaje SET anulado=TRUE,motivo_anulacion='Registro duplicado de demostracion' WHERE id=?",p.id)
                 }
             }
