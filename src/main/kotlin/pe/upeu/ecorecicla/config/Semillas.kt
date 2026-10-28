@@ -19,7 +19,7 @@ class Semillas(private val db: JdbcTemplate, private val passwords: PasswordEnco
                     db.update("INSERT INTO rol_privilegio VALUES (?,?)",rol.name,p.name)
             }
         }
-        listOf("operario1" to Rol.OPERARIO, "supervisor1" to Rol.SUPERVISOR, "admin" to Rol.ADMINISTRADOR,"operario2" to Rol.OPERARIO).forEach { (user, rol) ->
+        listOf("operario1" to Rol.OPERARIO, "supervisor1" to Rol.SUPERVISOR, "admin" to Rol.ADMINISTRADOR,"operario2" to Rol.OPERARIO,"auditor1" to Rol.AUDITOR).forEach { (user, rol) ->
             if (db.queryForObject("SELECT COUNT(*) FROM usuario WHERE username=?", Long::class.java,user)==0L)
                 db.update("INSERT INTO usuario(username,password,nombre,rol) VALUES (?,?,?,?)",user,passwords.encode("Eco2026*"),user,rol.name)
         }
