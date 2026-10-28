@@ -68,7 +68,7 @@ class OperacionesTest(@Autowired val mvc: MockMvc,@Autowired val json: ObjectMap
         mvc.get("/api/v1/puntos?zona=Norte&pagina=0&tamanio=2") { header("Authorization","Bearer ${token("admin")}") }.andExpect { status { isOk() }; jsonPath("$.contenido.length()") { value(2) }; jsonPath("$.totalElementos") { value(4) }; jsonPath("$.ultima") { value(false) } }
     }
     @Test fun `token firmado vencido no permite acceso`() {
-        val claims=JwtClaimsSet.builder().issuer("ecoapi").subject("1").issuedAt(Instant.now().minusSeconds(3601)).expiresAt(Instant.now().minusSeconds(1)).build()
+        val claims=JwtClaimsSet.builder().issuer("ecoapi").subject("1").claim("username","operario1").claim("version",0L).claim("privilegios",listOf("PUNTO_LEER")).issuedAt(Instant.now().minusSeconds(3601)).expiresAt(Instant.now().minusSeconds(1)).build()
         val expired=encoder.encode(JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS256).build(),claims)).tokenValue
         mvc.get("/api/v1/me") { header("Authorization","Bearer $expired") }.andExpect { status { isUnauthorized() } }
     }
