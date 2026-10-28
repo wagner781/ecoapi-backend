@@ -1,0 +1,7 @@
+{
+  "name": "ecoapi-verificacion",
+  "private": true,
+  "type": "module",
+  "scripts": { "test:api": "node scripts/verificar-api.mjs" },
+  "engines": { "node": ">=20" }
+}
