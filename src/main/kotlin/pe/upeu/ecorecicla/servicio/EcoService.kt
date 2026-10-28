@@ -16,18 +16,15 @@ class EcoService(private val repo: EcoRepository) {
     // PESAJE_ANULAR distingue a quien puede corregir cualquier pesaje sin comparar roles.
     private fun acceso(r: Ruta, user: Long, supervisor: Boolean) { if(r.usuarioId!=user && !supervisor) throw Fallo(403,"Ruta asignada a otro usuario") }
     private fun abierta(r: Ruta) { if(r.cerrada) throw Fallo(409,"La ruta ya esta cerrada") }
-    private fun validar(b: PesajePeticion) {
-        if(!b.pesoBruto.isFinite() || !b.tara.isFinite() || b.pesoBruto<=b.tara || b.tara<0)
-            throw Fallo(400,"Datos invalidos",mapOf("tara" to "La tara debe ser no negativa y menor que el peso bruto"))
-    }
     @Transactional
     fun crear(b: PesajePeticion, user: Long, supervisor: Boolean): Pesaje {
         val r=ruta(b.rutaId); acceso(r,user,supervisor)
         // La clave estable hace seguro reintentar si el servidor guardo pero se perdio la respuesta.
         repo.porClave(user,b.claveCliente)?.let { return it }
-        abierta(r); validar(b)
+        abierta(r)
+        val neto=ReglasPesaje.calcularNeto(b.pesoBruto,b.tara)
         if(repo.puntosRuta(r.id).none { it.id==b.puntoId }) throw Fallo(404,"Punto fuera de la ruta")
-        return repo.crear(b,user,OffsetDateTime.now(zona).toString())
+        return repo.crear(b,user,OffsetDateTime.now(zona).toString(),neto)
     }
     @Transactional
     fun corregir(id: Long, b: PesajePeticion, user: Long, supervisor: Boolean): Pesaje {
@@ -36,14 +33,14 @@ class EcoService(private val repo: EcoRepository) {
         if(!supervisor && (p.operarioId!=user || OffsetDateTime.parse(p.fechaHora).atZoneSameInstant(zona).toLocalDate()!=hoy())) throw Fallo(403,"Solo puede corregir sus pesajes del mismo dia")
         if(p.anulado) throw Fallo(409,"El pesaje esta anulado")
         if(b.rutaId!=p.rutaId || b.puntoId!=p.puntoId) throw Fallo(400,"No se puede mover un pesaje de ruta o punto")
-        validar(b)
-        repo.db.update("UPDATE pesaje SET material=?,peso_bruto=?,tara=?,peso_neto=?,observacion=? WHERE id=?",b.material,b.pesoBruto,b.tara,b.pesoBruto-b.tara,b.observacion,id)
+        val neto=ReglasPesaje.calcularNeto(b.pesoBruto,b.tara)
+        repo.db.update("UPDATE pesaje SET material=?,peso_bruto=?,tara=?,peso_neto=?,observacion=? WHERE id=?",b.material,b.pesoBruto,b.tara,neto,b.observacion,id)
         return repo.pesaje(id)!!
     }
     @Transactional
     fun anular(id: Long, motivo: String) {
         val p=repo.pesaje(id) ?: throw Fallo(404,"Pesaje inexistente")
-        abierta(ruta(p.rutaId))
+        ruta(p.rutaId) // Serializa la anulacion con el cierre; RN-01 solo limita crear/corregir.
         repo.db.update("UPDATE pesaje SET anulado=TRUE,motivo_anulacion=? WHERE id=?",motivo,id)
     }
     @Transactional

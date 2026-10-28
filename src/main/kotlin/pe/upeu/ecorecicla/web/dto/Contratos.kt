@@ -9,5 +9,5 @@ data class PesajePeticion(val rutaId: Long, val puntoId: Long,
     @field:Size(max=500) val observacion: String? = null,
     @field:NotBlank @field:Size(max=150) val claveCliente: String)
 data class MotivoPeticion(@field:NotBlank @field:Size(max=300) val motivo: String)
-data class PuntoPeticion(@field:NotBlank val razonSocial: String, @field:NotBlank val direccion: String, @field:NotBlank val zona: String, @field:NotBlank val materialHabitual: String)
+data class PuntoPeticion(@field:NotBlank @field:Size(max=150) val razonSocial: String, @field:NotBlank @field:Size(max=200) val direccion: String, @field:NotBlank @field:Size(max=80) val zona: String, @field:NotBlank @field:Size(max=80) val materialHabitual: String)
 data class RutaPeticion(val usuarioId: Long, val fecha: java.time.LocalDate, @field:Size(min=1) val puntoIds: List<Long>)
