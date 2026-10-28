@@ -39,6 +39,14 @@ const login = async usuario => {
 await peticion('GET', '/me', null, undefined, 401);
 await peticion('POST', '/auth/login', null, { usuario: 'operario1', password: 'incorrecta' }, 401);
 const operario = await login('operario1'), supervisor = await login('supervisor1'), admin = await login('admin');
+const auditor = await login('auditor1');
+const perfilAuditor=await peticion('GET','/me',auditor);
+assert.deepEqual([...perfilAuditor.privilegios].sort(),['PESAJE_LEER','PUNTO_LEER']);
+await peticion('GET','/puntos',auditor);
+await peticion('GET','/puntos/1/pesajes',auditor);
+await peticion('POST','/rutas/1/cierre',auditor,undefined,403);
+await peticion('DELETE','/pesajes/1',auditor,{motivo:'Prueba auditor'},403);
+await peticion('GET','/usuarios',auditor,undefined,403);
 await peticion('GET', '/me', operario + 'alterado', undefined, 401);
 const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url');
 const claimsActuales = JSON.parse(Buffer.from(operario.split('.')[1], 'base64url').toString());
@@ -51,16 +59,21 @@ const pagina = await peticion('GET', '/puntos?zona=Norte&pagina=0&tamanio=2', op
 assert.equal(pagina.contenido.length, 2); assert.equal(pagina.totalElementos, 4);
 await peticion('POST', `/rutas/${ruta.id}/cierre`, operario, undefined, 403);
 await peticion('POST', `/rutas/${ruta.id}/cierre`, supervisor, undefined, 409);
-const body = { rutaId: ruta.id, puntoId: ruta.puntos[0].id, material: 'Papel', pesoBruto: 20, tara: 2, observacion: 'Prueba HTTP real', claveCliente: randomUUID() };
+const body = { rutaId: ruta.id, puntoId: ruta.puntos[0].id, material: 'Papel', pesoBruto: 20, tara: 2, observacion: 'Prueba HTTP real', claveCliente: randomUUID(),humedadEstimada:12.75 };
 await peticion('POST', '/pesajes', admin, body, 403);
+await peticion('POST', '/pesajes', auditor, body, 403);
 const invalido = await peticion('POST', '/pesajes', operario, { ...body, tara: 21 }, 400);
 assert.ok(invalido.validationErrors.tara);
+const humedadInvalida=await peticion('POST','/pesajes',operario,{...body,humedadEstimada:101},400);
+assert.ok(humedadInvalida.validationErrors.humedadEstimada);
 const creado = await peticion('POST', '/pesajes', operario, body, 201);
 assert.equal(creado.pesoNeto, 18);
+assert.equal(creado.humedadEstimada,12.75);
 const repetido = await peticion('POST', '/pesajes', operario, body, 201);
 assert.equal(repetido.id, creado.id);
-const editado = await peticion('PUT', `/pesajes/${creado.id}`, operario, { ...body, pesoBruto: 24 });
+const editado = await peticion('PUT', `/pesajes/${creado.id}`, operario, { ...body, pesoBruto: 24,humedadEstimada:20.5 });
 assert.equal(editado.pesoNeto, 22);
+assert.equal(editado.humedadEstimada,20.5);
 await peticion('DELETE', `/pesajes/${creado.id}`, operario, { motivo: 'Prueba' }, 403);
 await peticion('DELETE', `/pesajes/${creado.id}`, supervisor, { motivo: 'Finaliza prueba HTTP' }, 204);
 const listado = await peticion('GET', `/puntos/${body.puntoId}/pesajes?tamanio=100`, operario);
@@ -74,7 +87,7 @@ await peticion('GET', '/usuarios', supervisor, undefined, 403);
 await peticion('GET', '/rutas', supervisor);
 writeFileSync(new URL('../api/EcoAPI.postman_collection.json',import.meta.url),JSON.stringify({
   info:{name:'EcoAPI - exportacion de peticiones ejecutadas',description:'Exportada por el cliente Node.js tras verificar las respuestas reales. Los tokens se obtienen con login; no se guardan credenciales de sesion.',schema:'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'},
-  variable:[{key:'baseUrl',value:base},{key:'rutaId',value:'1'},{key:'puntoId',value:'1'},{key:'pesajeId',value:''},{key:'clavePesaje',value:''},...['operario1','supervisor1','admin'].map(u=>({key:'token_'+u,value:''}))],item:exportadas
+  variable:[{key:'baseUrl',value:base},{key:'rutaId',value:'1'},{key:'puntoId',value:'1'},{key:'pesajeId',value:''},{key:'clavePesaje',value:''},...['operario1','supervisor1','admin','auditor1'].map(u=>({key:'token_'+u,value:''}))],item:exportadas
 },null,2)+'\n');
 console.log(resultados.join('\n'));
 console.log(`OK: ${resultados.length} peticiones verificadas contra ${base}. No se imprimen tokens.`);

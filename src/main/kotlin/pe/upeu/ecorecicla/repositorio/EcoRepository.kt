@@ -15,7 +15,7 @@ class EcoRepository(val db: JdbcTemplate) {
         return keys.key!!.toLong()
     }
     private fun punto(r: ResultSet) = Punto(r.getLong("id"),r.getString("razon_social"),r.getString("direccion"),r.getString("zona"),r.getString("material_habitual"))
-    private fun pesaje(r: ResultSet) = Pesaje(r.getLong("id"),r.getLong("ruta_id"),r.getLong("punto_id"),r.getString("fecha_hora"),r.getString("material"),r.getDouble("peso_bruto"),r.getDouble("tara"),r.getDouble("peso_neto"),r.getString("username"),r.getLong("operario_id"),r.getString("observacion"),r.getBoolean("anulado"),r.getString("motivo_anulacion"))
+    private fun pesaje(r: ResultSet) = Pesaje(r.getLong("id"),r.getLong("ruta_id"),r.getLong("punto_id"),r.getString("fecha_hora"),r.getString("material"),r.getDouble("peso_bruto"),r.getDouble("tara"),r.getDouble("peso_neto"),r.getString("username"),r.getLong("operario_id"),r.getString("observacion"),r.getBoolean("anulado"),r.getString("motivo_anulacion"),r.getBigDecimal("humedad_estimada")?.toDouble())
     private val selectPesaje = "SELECT p.*,u.username FROM pesaje p JOIN usuario u ON u.id=p.operario_id"
     fun ruta(id: Long, lock: Boolean = false): Ruta? = db.query("SELECT * FROM ruta WHERE id=?" + if(lock) " FOR UPDATE" else "", {r,_ -> Ruta(r.getLong("id"),r.getDate("fecha").toLocalDate(),r.getLong("usuario_id"),r.getBoolean("cerrada"))},id).firstOrNull()
     fun delDia(user: Long, fecha: LocalDate): Ruta? = db.queryForList("SELECT id FROM ruta WHERE usuario_id=? AND fecha=? ORDER BY id",Long::class.java,user,fecha).firstOrNull()?.let { ruta(it)?.copy(puntos=puntosRuta(it)) }
@@ -40,8 +40,8 @@ class EcoRepository(val db: JdbcTemplate) {
     fun porClave(user: Long, clave: String): Pesaje? = db.query("$selectPesaje WHERE p.operario_id=? AND p.clave_cliente=?",{r,_ -> pesaje(r)},user,clave).firstOrNull()
     fun pesajes(punto: Long, pagina: Int, tamanio: Int): Pair<List<Pesaje>,Long> = db.query("$selectPesaje WHERE p.punto_id=? ORDER BY p.fecha_hora DESC,p.id DESC LIMIT ? OFFSET ?",{r,_ -> pesaje(r)},punto,tamanio,pagina.toLong()*tamanio) to db.queryForObject("SELECT COUNT(*) FROM pesaje WHERE punto_id=?",Long::class.java,punto)!!
     fun crear(body: PesajePeticion, user: Long, fecha: String, neto: Double): Pesaje {
-        val id=insertar("""INSERT INTO pesaje(ruta_id,punto_id,fecha_hora,material,peso_bruto,tara,peso_neto,operario_id,observacion,clave_cliente)
-            VALUES (?,?,?,?,?,?,?,?,?,?)""",body.rutaId,body.puntoId,fecha,body.material,body.pesoBruto,body.tara,neto,user,body.observacion,body.claveCliente)
+        val id=insertar("""INSERT INTO pesaje(ruta_id,punto_id,fecha_hora,material,peso_bruto,tara,peso_neto,operario_id,observacion,clave_cliente,humedad_estimada)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?)""",body.rutaId,body.puntoId,fecha,body.material,body.pesoBruto,body.tara,neto,user,body.observacion,body.claveCliente,body.humedadEstimada)
         return pesaje(id)!!
     }
 }

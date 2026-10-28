@@ -29,3 +29,10 @@ Gradle ejecuta pruebas integradas Spring/MockMvc con H2 en modo PostgreSQL y rol
 La Parte I incorpora administración de usuarios, roles, padrón y asignaciones. Todo depende de privilegios, no del nombre del rol. Desactivar una cuenta conserva su historial; eliminar puntos/roles con referencias devuelve 409. La matriz de privilegios inicial es la del PDF. El segundo operario permite demostrar una corrección ajena con el mismo rol.
 
 No se inventan capturas, fechas de sesiones ni conflictos. El historial comenzó el día real de creación; no acredita sesiones anteriores de la unidad. Las etiquetas representan entregas técnicas, no una evaluación realizada por el docente. Las solicitudes SC se documentan en sus propias ramas cuando se implementan, distinguiendo trabajo solicitado por el usuario de una sesión de examen.
+## SC-B: auditor
+
+`Rol.AUDITOR` configura exactamente PUNTO_LEER y PESAJE_LEER. La semilla `auditor1 / Eco2026*` se crea al iniciar; no tiene ruta asignada ni privilegios de escritura. Controladores y filtro siguen autorizando por privilegios, sin comparar nombres de rol. AuditorTest verifica lectura y rechazo de once escrituras, ademas de conservar la sesion. El cliente HTTP real exporta tambien peticiones del auditor (34 peticiones verificadas).
+
+## SC-C: humedad estimada
+
+`humedadEstimada` es un porcentaje opcional de 0 a 100, hasta dos decimales. El PDF no fija unidad ni rango: se adopta porcentaje y se conserva null en registros anteriores. PostgreSQL agrega NUMERIC(5,2) mediante ALTER idempotente; los historicos propios no se rellenan. Solo las semillas identificadas reciben datos de demostracion. ReglasPesaje valida tambien llamadas de servicio; DTO y respuesta incorporan el campo y no cambia el calculo bruto menos tara. HumedadTest verifica persistencia, correccion, limites, null y semillas. La coleccion HTTP real verifica alta 12.75, correccion 20.5 y rechazo 101.

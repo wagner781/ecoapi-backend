@@ -36,6 +36,10 @@
     {
       "key": "token_admin",
       "value": ""
+    },
+    {
+      "key": "token_auditor1",
+      "value": ""
     }
   ],
   "item": [
@@ -76,7 +80,7 @@
             "url": "{{baseUrl}}/me"
           },
           "code": 401,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:46.655318494\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:46.514735377\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -125,7 +129,7 @@
             }
           },
           "code": 401,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:46.772367142\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Credenciales incorrectas\",\n  \"path\": \"/api/v1/auth/login\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.113759650\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Credenciales incorrectas\",\n  \"path\": \"/api/v1/auth/login\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -175,7 +179,7 @@
             }
           },
           "code": 200,
-          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"operario1\",\n  \"nombre\": \"operario1\",\n  \"rol\": \"OPERARIO\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PESAJE_CREAR\",\n    \"PESAJE_EDITAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 1,\n  \"expiresAt\": 1793229526\n}"
+          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"operario1\",\n  \"nombre\": \"operario1\",\n  \"rol\": \"OPERARIO\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PESAJE_CREAR\",\n    \"PESAJE_EDITAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 1,\n  \"expiresAt\": 1793230787\n}"
         }
       ]
     },
@@ -225,7 +229,7 @@
             }
           },
           "code": 200,
-          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"supervisor1\",\n  \"nombre\": \"supervisor1\",\n  \"rol\": \"SUPERVISOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PESAJE_CREAR\",\n    \"PESAJE_EDITAR\",\n    \"PESAJE_ANULAR\",\n    \"RUTA_CERRAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 2,\n  \"expiresAt\": 1793229526\n}"
+          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"supervisor1\",\n  \"nombre\": \"supervisor1\",\n  \"rol\": \"SUPERVISOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PESAJE_CREAR\",\n    \"PESAJE_EDITAR\",\n    \"PESAJE_ANULAR\",\n    \"RUTA_CERRAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 2,\n  \"expiresAt\": 1793230787\n}"
         }
       ]
     },
@@ -275,7 +279,359 @@
             }
           },
           "code": 200,
-          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"admin\",\n  \"nombre\": \"admin\",\n  \"rol\": \"ADMINISTRADOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PUNTO_GESTIONAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 3,\n  \"expiresAt\": 1793229527\n}"
+          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"admin\",\n  \"nombre\": \"admin\",\n  \"rol\": \"ADMINISTRADOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PUNTO_GESTIONAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 3,\n  \"expiresAt\": 1793230787\n}"
+        }
+      ]
+    },
+    {
+      "name": "200 POST /auth/login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"auditor1\",\n  \"password\": \"Eco2026*\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set('token_auditor1', pm.response.json().token);"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuario\": \"auditor1\",\n  \"password\": \"Eco2026*\"\n}"
+            }
+          },
+          "code": 200,
+          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"auditor1\",\n  \"nombre\": \"auditor1\",\n  \"rol\": \"AUDITOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 6,\n  \"expiresAt\": 1793230787\n}"
+        }
+      ]
+    },
+    {
+      "name": "200 GET /me",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_auditor1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/me"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/me"
+          },
+          "code": 200,
+          "body": "{\n  \"id\": 6,\n  \"usuario\": \"auditor1\",\n  \"nombre\": \"auditor1\",\n  \"rol\": \"AUDITOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\"\n  ],\n  \"activo\": true\n}"
+        }
+      ]
+    },
+    {
+      "name": "200 GET /puntos",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_auditor1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/puntos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/puntos"
+          },
+          "code": 200,
+          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 1,\n      \"razonSocial\": \"Empresa 1\",\n      \"direccion\": \"Av. Reciclaje 1\",\n      \"zona\": \"Norte\",\n      \"materialHabitual\": \"Papel\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 2,\n      \"razonSocial\": \"Empresa 2\",\n      \"direccion\": \"Av. Reciclaje 2\",\n      \"zona\": \"Centro\",\n      \"materialHabitual\": \"Plastico\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 3,\n      \"razonSocial\": \"Empresa 3\",\n      \"direccion\": \"Av. Reciclaje 3\",\n      \"zona\": \"Sur\",\n      \"materialHabitual\": \"Metal\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 4,\n      \"razonSocial\": \"Empresa 4\",\n      \"direccion\": \"Av. Reciclaje 4\",\n      \"zona\": \"Norte\",\n      \"materialHabitual\": \"Papel\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 5,\n      \"razonSocial\": \"Empresa 5\",\n      \"direccion\": \"Av. Reciclaje 5\",\n      \"zona\": \"Centro\",\n      \"materialHabitual\": \"Plastico\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 6,\n      \"razonSocial\": \"Empresa 6\",\n      \"direccion\": \"Av. Reciclaje 6\",\n      \"zona\": \"Sur\",\n      \"materialHabitual\": \"Metal\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 7,\n      \"razonSocial\": \"Empresa 7\",\n      \"direccion\": \"Av. Reciclaje 7\",\n      \"zona\": \"Norte\",\n      \"materialHabitual\": \"Papel\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 8,\n      \"razonSocial\": \"Empresa 8\",\n      \"direccion\": \"Av. Reciclaje 8\",\n      \"zona\": \"Centro\",\n      \"materialHabitual\": \"Plastico\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 9,\n      \"razonSocial\": \"Empresa 9\",\n      \"direccion\": \"Av. Reciclaje 9\",\n      \"zona\": \"Sur\",\n      \"materialHabitual\": \"Metal\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 10,\n      \"razonSocial\": \"Empresa 10\",\n      \"direccion\": \"Av. Reciclaje 10\",\n      \"zona\": \"Norte\",\n      \"materialHabitual\": \"Papel\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 11,\n      \"razonSocial\": \"Empresa 11\",\n      \"direccion\": \"Av. Reciclaje 11\",\n      \"zona\": \"Centro\",\n      \"materialHabitual\": \"Plastico\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 12,\n      \"razonSocial\": \"Empresa 12\",\n      \"direccion\": \"Av. Reciclaje 12\",\n      \"zona\": \"Sur\",\n      \"materialHabitual\": \"Metal\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 20,\n  \"totalElementos\": 12,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
+        }
+      ]
+    },
+    {
+      "name": "200 GET /puntos/1/pesajes",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_auditor1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/puntos/1/pesajes"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/puntos/1/pesajes"
+          },
+          "code": 200,
+          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 23,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:35:18.643176905-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 22,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 21,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:14:08.479296452-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 18,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:58:13.511488279-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 16,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:40:09.394062600-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 1,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null,\n      \"humedadEstimada\": 12.5\n    },\n    {\n      \"id\": 10,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:06-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 31,\n      \"tara\": 2,\n      \"pesoNeto\": 29,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null,\n      \"humedadEstimada\": 12.5\n    },\n    {\n      \"id\": 4,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null,\n      \"humedadEstimada\": 12.5\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 20,\n  \"totalElementos\": 8,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
+        }
+      ]
+    },
+    {
+      "name": "403 POST /rutas/1/cierre",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_auditor1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/rutas/{{rutaId}}/cierre"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 403', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/rutas/{{rutaId}}/cierre"
+          },
+          "code": 403,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.871239309\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/rutas/1/cierre\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
+    },
+    {
+      "name": "403 DELETE /pesajes/1",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_auditor1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"motivo\": \"Prueba auditor\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 403', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"Prueba auditor\"\n}"
+            }
+          },
+          "code": 403,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.899931699\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes/1\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
+    },
+    {
+      "name": "403 GET /usuarios",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_auditor1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/usuarios"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 403', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios"
+          },
+          "code": 403,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.921421837\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/usuarios\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -324,7 +680,7 @@
             "url": "{{baseUrl}}/me"
           },
           "code": 401,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.099892881\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.936887122\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -373,7 +729,7 @@
             "url": "{{baseUrl}}/me"
           },
           "code": 401,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.107024327\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.943970527\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -521,7 +877,7 @@
             "url": "{{baseUrl}}/rutas/{{rutaId}}/cierre"
           },
           "code": 403,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.126113270\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/rutas/1/cierre\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:47.989383106\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/rutas/1/cierre\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -570,7 +926,7 @@
             "url": "{{baseUrl}}/rutas/{{rutaId}}/cierre"
           },
           "code": 409,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.133161202\",\n  \"status\": 409,\n  \"error\": \"Conflict\",\n  \"message\": \"Faltan 2 puntos sin pesaje ni motivo de omision\",\n  \"path\": \"/api/v1/rutas/1/cierre\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.002453566\",\n  \"status\": 409,\n  \"error\": \"Conflict\",\n  \"message\": \"Faltan 2 puntos sin pesaje ni motivo de omision\",\n  \"path\": \"/api/v1/rutas/1/cierre\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -591,7 +947,7 @@
         "url": "{{baseUrl}}/pesajes",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 12.75\n}"
         }
       },
       "event": [
@@ -623,11 +979,68 @@
             "url": "{{baseUrl}}/pesajes",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 12.75\n}"
             }
           },
           "code": 403,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.139821325\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.059515289\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
+    },
+    {
+      "name": "403 POST /pesajes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_auditor1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/pesajes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 12.75\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 403', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pesajes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 12.75\n}"
+            }
+          },
+          "code": 403,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.071923025\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -648,7 +1061,7 @@
         "url": "{{baseUrl}}/pesajes",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 21,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 21,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 12.75\n}"
         }
       },
       "event": [
@@ -680,11 +1093,68 @@
             "url": "{{baseUrl}}/pesajes",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 21,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 21,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 12.75\n}"
             }
           },
           "code": 400,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.148620718\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Datos invalidos\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {\n    \"tara\": \"La tara debe ser no negativa y menor que el peso bruto\"\n  }\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.085510519\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Datos invalidos\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {\n    \"tara\": \"La tara debe ser no negativa y menor que el peso bruto\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "400 POST /pesajes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_operario1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/pesajes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 101\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 400', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_operario1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pesajes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\",\n  \"humedadEstimada\": 101\n}"
+            }
+          },
+          "code": 400,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.163171882\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Datos invalidos\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {\n    \"humedadEstimada\": \"must be less than or equal to 100\"\n  }\n}"
         }
       ]
     },
@@ -705,7 +1175,7 @@
         "url": "{{baseUrl}}/pesajes",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\"\n}"
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\",\n  \"humedadEstimada\": 12.75\n}"
         }
       },
       "event": [
@@ -747,11 +1217,11 @@
             "url": "{{baseUrl}}/pesajes",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\"\n}"
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\",\n  \"humedadEstimada\": 12.75\n}"
             }
           },
           "code": 201,
-          "body": "{\n  \"id\": 22,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"pesoNeto\": 18,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null\n}"
+          "body": "{\n  \"id\": 24,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:39:48.179381313-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"pesoNeto\": 18,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null,\n  \"humedadEstimada\": 12.75\n}"
         }
       ]
     },
@@ -772,7 +1242,7 @@
         "url": "{{baseUrl}}/pesajes",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\"\n}"
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\",\n  \"humedadEstimada\": 12.75\n}"
         }
       },
       "event": [
@@ -805,16 +1275,16 @@
             "url": "{{baseUrl}}/pesajes",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\"\n}"
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\",\n  \"humedadEstimada\": 12.75\n}"
             }
           },
           "code": 201,
-          "body": "{\n  \"id\": 22,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"pesoNeto\": 18,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null\n}"
+          "body": "{\n  \"id\": 24,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:39:48.179381313-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"pesoNeto\": 18,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null,\n  \"humedadEstimada\": 12.75\n}"
         }
       ]
     },
     {
-      "name": "200 PUT /pesajes/22",
+      "name": "200 PUT /pesajes/24",
       "request": {
         "method": "PUT",
         "header": [
@@ -830,7 +1300,7 @@
         "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"27d5a2ba-5663-4f7a-b66b-e0079c1e61da\"\n}"
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"2f05b246-d4c4-4c9c-86c5-31b6393b22eb\",\n  \"humedadEstimada\": 20.5\n}"
         }
       },
       "event": [
@@ -862,16 +1332,16 @@
             "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"27d5a2ba-5663-4f7a-b66b-e0079c1e61da\"\n}"
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"2f05b246-d4c4-4c9c-86c5-31b6393b22eb\",\n  \"humedadEstimada\": 20.5\n}"
             }
           },
           "code": 200,
-          "body": "{\n  \"id\": 22,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"pesoNeto\": 22,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null\n}"
+          "body": "{\n  \"id\": 24,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:39:48.179381313-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"pesoNeto\": 22,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null,\n  \"humedadEstimada\": 20.5\n}"
         }
       ]
     },
     {
-      "name": "403 DELETE /pesajes/22",
+      "name": "403 DELETE /pesajes/24",
       "request": {
         "method": "DELETE",
         "header": [
@@ -923,12 +1393,12 @@
             }
           },
           "code": 403,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.220182733\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes/22\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.239719977\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes/24\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
     {
-      "name": "204 DELETE /pesajes/22",
+      "name": "204 DELETE /pesajes/24",
       "request": {
         "method": "DELETE",
         "header": [
@@ -1029,7 +1499,7 @@
             "url": "{{baseUrl}}/puntos/1/pesajes?tamanio=100"
           },
           "code": 200,
-          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 22,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 21,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:14:08.479296452-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 18,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:58:13.511488279-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 16,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:40:09.394062600-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 1,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null\n    },\n    {\n      \"id\": 10,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:06-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 31,\n      \"tara\": 2,\n      \"pesoNeto\": 29,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null\n    },\n    {\n      \"id\": 4,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 100,\n  \"totalElementos\": 7,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
+          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 24,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:39:48.179381313-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": 20.5\n    },\n    {\n      \"id\": 23,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:35:18.643176905-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 22,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 21,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:14:08.479296452-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 18,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:58:13.511488279-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 16,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:40:09.394062600-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\",\n      \"humedadEstimada\": null\n    },\n    {\n      \"id\": 1,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null,\n      \"humedadEstimada\": 12.5\n    },\n    {\n      \"id\": 10,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:06-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 31,\n      \"tara\": 2,\n      \"pesoNeto\": 29,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null,\n      \"humedadEstimada\": 12.5\n    },\n    {\n      \"id\": 4,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null,\n      \"humedadEstimada\": 12.5\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 100,\n  \"totalElementos\": 9,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
         }
       ]
     },
@@ -1078,7 +1548,7 @@
             "url": "{{baseUrl}}/puntos/9999999/pesajes"
           },
           "code": 404,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.258000223\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Punto inexistente\",\n  \"path\": \"/api/v1/puntos/9999999/pesajes\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.277187084\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Punto inexistente\",\n  \"path\": \"/api/v1/puntos/9999999/pesajes\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -1127,7 +1597,7 @@
             "url": "{{baseUrl}}/ruta-inexistente"
           },
           "code": 404,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.264961273\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Recurso inexistente\",\n  \"path\": \"/api/v1/ruta-inexistente\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.288071941\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Recurso inexistente\",\n  \"path\": \"/api/v1/ruta-inexistente\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -1176,7 +1646,7 @@
             "url": "{{baseUrl}}/usuarios"
           },
           "code": 200,
-          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 1,\n      \"usuario\": \"operario1\",\n      \"nombre\": \"operario1\",\n      \"rol\": \"OPERARIO\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\"\n      ],\n      \"activo\": true\n    },\n    {\n      \"id\": 2,\n      \"usuario\": \"supervisor1\",\n      \"nombre\": \"supervisor1\",\n      \"rol\": \"SUPERVISOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\",\n        \"PESAJE_ANULAR\",\n        \"RUTA_CERRAR\"\n      ],\n      \"activo\": true\n    },\n    {\n      \"id\": 3,\n      \"usuario\": \"admin\",\n      \"nombre\": \"admin\",\n      \"rol\": \"ADMINISTRADOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PUNTO_GESTIONAR\"\n      ],\n      \"activo\": true\n    },\n    {\n      \"id\": 4,\n      \"usuario\": \"operario2\",\n      \"nombre\": \"operario2\",\n      \"rol\": \"OPERARIO\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\"\n      ],\n      \"activo\": true\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 20,\n  \"totalElementos\": 4,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
+          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 1,\n      \"usuario\": \"operario1\",\n      \"nombre\": \"operario1\",\n      \"rol\": \"OPERARIO\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\"\n      ],\n      \"activo\": true\n    },\n    {\n      \"id\": 2,\n      \"usuario\": \"supervisor1\",\n      \"nombre\": \"supervisor1\",\n      \"rol\": \"SUPERVISOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\",\n        \"PESAJE_ANULAR\",\n        \"RUTA_CERRAR\"\n      ],\n      \"activo\": true\n    },\n    {\n      \"id\": 3,\n      \"usuario\": \"admin\",\n      \"nombre\": \"admin\",\n      \"rol\": \"ADMINISTRADOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PUNTO_GESTIONAR\"\n      ],\n      \"activo\": true\n    },\n    {\n      \"id\": 4,\n      \"usuario\": \"operario2\",\n      \"nombre\": \"operario2\",\n      \"rol\": \"OPERARIO\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\"\n      ],\n      \"activo\": true\n    },\n    {\n      \"id\": 5,\n      \"usuario\": \"qa_225837\",\n      \"nombre\": \"Usuario QA editado 225837\",\n      \"rol\": \"OPERARIO\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\"\n      ],\n      \"activo\": false\n    },\n    {\n      \"id\": 6,\n      \"usuario\": \"auditor1\",\n      \"nombre\": \"auditor1\",\n      \"rol\": \"AUDITOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\"\n      ],\n      \"activo\": true\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 20,\n  \"totalElementos\": 6,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
         }
       ]
     },
@@ -1225,7 +1695,7 @@
             "url": "{{baseUrl}}/roles"
           },
           "code": 200,
-          "body": "{\n  \"contenido\": [\n    {\n      \"nombre\": \"ADMINISTRADOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PUNTO_GESTIONAR\"\n      ]\n    },\n    {\n      \"nombre\": \"OPERARIO\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\"\n      ]\n    },\n    {\n      \"nombre\": \"ROL_QA_225837\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\"\n      ]\n    },\n    {\n      \"nombre\": \"SUPERVISOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\",\n        \"PESAJE_ANULAR\",\n        \"RUTA_CERRAR\"\n      ]\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 20,\n  \"totalElementos\": 4,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
+          "body": "{\n  \"contenido\": [\n    {\n      \"nombre\": \"ADMINISTRADOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PUNTO_GESTIONAR\"\n      ]\n    },\n    {\n      \"nombre\": \"AUDITOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\"\n      ]\n    },\n    {\n      \"nombre\": \"OPERARIO\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\"\n      ]\n    },\n    {\n      \"nombre\": \"SUPERVISOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\",\n        \"PESAJE_ANULAR\",\n        \"RUTA_CERRAR\"\n      ]\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 20,\n  \"totalElementos\": 4,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
         }
       ]
     },
@@ -1323,7 +1793,7 @@
             "url": "{{baseUrl}}/usuarios"
           },
           "code": 403,
-          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.295815801\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/usuarios\",\n  \"validationErrors\": {}\n}"
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:39:48.332417225\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/usuarios\",\n  \"validationErrors\": {}\n}"
         }
       ]
     },
@@ -1372,7 +1842,7 @@
             "url": "{{baseUrl}}/rutas"
           },
           "code": 200,
-          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 1,\n      \"fecha\": \"2026-10-28\",\n      \"usuarioId\": 1,\n      \"usuario\": \"operario1\",\n      \"cerrada\": false\n    },\n    {\n      \"id\": 3,\n      \"fecha\": \"2026-10-28\",\n      \"usuarioId\": 2,\n      \"usuario\": \"supervisor1\",\n      \"cerrada\": false\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 20,\n  \"totalElementos\": 2,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
+          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 1,\n      \"fecha\": \"2026-10-28\",\n      \"usuarioId\": 1,\n      \"usuario\": \"operario1\",\n      \"cerrada\": false\n    },\n    {\n      \"id\": 3,\n      \"fecha\": \"2026-10-28\",\n      \"usuarioId\": 2,\n      \"usuario\": \"supervisor1\",\n      \"cerrada\": false\n    },\n    {\n      \"id\": 4,\n      \"fecha\": \"2026-10-28\",\n      \"usuarioId\": 4,\n      \"usuario\": \"operario2\",\n      \"cerrada\": true\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 20,\n  \"totalElementos\": 3,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
         }
       ]
     }

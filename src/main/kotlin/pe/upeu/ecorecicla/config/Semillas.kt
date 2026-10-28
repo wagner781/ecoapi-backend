@@ -19,7 +19,7 @@ class Semillas(private val db: JdbcTemplate, private val passwords: PasswordEnco
                     db.update("INSERT INTO rol_privilegio VALUES (?,?)",rol.name,p.name)
             }
         }
-        listOf("operario1" to Rol.OPERARIO, "supervisor1" to Rol.SUPERVISOR, "admin" to Rol.ADMINISTRADOR,"operario2" to Rol.OPERARIO).forEach { (user, rol) ->
+        listOf("operario1" to Rol.OPERARIO, "supervisor1" to Rol.SUPERVISOR, "admin" to Rol.ADMINISTRADOR,"operario2" to Rol.OPERARIO,"auditor1" to Rol.AUDITOR).forEach { (user, rol) ->
             if (db.queryForObject("SELECT COUNT(*) FROM usuario WHERE username=?", Long::class.java,user)==0L)
                 db.update("INSERT INTO usuario(username,password,nombre,rol) VALUES (?,?,?,?)",user,passwords.encode("Eco2026*"),user,rol.name)
         }
@@ -40,7 +40,7 @@ class Semillas(private val db: JdbcTemplate, private val passwords: PasswordEnco
                 repeat(cantidad) { i ->
                     val punto=if(cerrada) puntos[i%6] else puntos[i]
                     val user=if(i==1) otroOperario else operario
-                    val b=pe.upeu.ecorecicla.web.dto.PesajePeticion(ruta,punto,"Papel",25.0+i,2.0,"Semilla de demostracion","semilla-$ruta-$i")
+                    val b=pe.upeu.ecorecicla.web.dto.PesajePeticion(ruta,punto,"Papel",25.0+i,2.0,"Semilla de demostracion","semilla-$ruta-$i",humedadEstimada=10.0+i)
                     val p=repo.crear(b,user,fecha.atTime(8,i).atZone(java.time.ZoneId.of("America/Lima")).toOffsetDateTime().toString(),pe.upeu.ecorecicla.servicio.ReglasPesaje.calcularNeto(b.pesoBruto,b.tara))
                     if(cerrada && i==11) db.update("UPDATE pesaje SET anulado=TRUE,motivo_anulacion='Registro duplicado de demostracion' WHERE id=?",p.id)
                 }
@@ -49,9 +49,11 @@ class Semillas(private val db: JdbcTemplate, private val passwords: PasswordEnco
         val rutaActual=repo.delDia(operario,today)!!
         val clave="semilla-ajeno-${rutaActual.id}"
         if(db.queryForObject("SELECT COUNT(*) FROM pesaje WHERE ruta_id=? AND operario_id=?",Long::class.java,rutaActual.id,otroOperario)==0L) {
-            val b=pe.upeu.ecorecicla.web.dto.PesajePeticion(rutaActual.id,puntos[1],"Papel",26.0,2.0,"Semilla: otro operario",clave)
+            val b=pe.upeu.ecorecicla.web.dto.PesajePeticion(rutaActual.id,puntos[1],"Papel",26.0,2.0,"Semilla: otro operario",clave,humedadEstimada=15.5)
             repo.crear(b,otroOperario,java.time.OffsetDateTime.now(java.time.ZoneId.of("America/Lima")).toString(),pe.upeu.ecorecicla.servicio.ReglasPesaje.calcularNeto(b.pesoBruto,b.tara))
         }
+        // Solo las filas identificadas como semillas reciben una estimacion de demostracion.
+        db.update("UPDATE pesaje SET humedad_estimada=12.5 WHERE humedad_estimada IS NULL AND clave_cliente LIKE 'semilla-%'")
         if(repo.delDia(supervisor,today)==null) {
             val ruta=repo.insertar("INSERT INTO ruta(fecha,usuario_id,cerrada) VALUES (?,?,FALSE)",today,supervisor)
             puntos.forEachIndexed { i,p -> db.update("INSERT INTO ruta_punto(ruta_id,punto_id,secuencia) VALUES (?,?,?)",ruta,p,i+1) }

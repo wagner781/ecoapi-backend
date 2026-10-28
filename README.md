@@ -60,3 +60,7 @@ Las rutas son únicas por usuario/fecha desde el servicio. La asignación requie
 Paquetes: `config` (JWT, seguridad, errores, semillas), `seguridad` (usuario y matriz), `dominio` (entidades), `repositorio` (JDBC), `servicio` (RN y transacciones), `web/dto` (contrato). Consulta [la guía de defensa](docs/DEFENSA.md).
 
 Git: bootstrap compilable en main; funcionalidades desde develop y PR con merge commit, sin squash. El bootstrap es la única excepción inicial necesaria para crear las ramas. No se fabrica desarrollo en fechas anteriores ni una rama de solicitud de cambio sin conocer la asignada. Revisa `git log --graph --oneline --all`.
+
+SC-B agrega `auditor1 / Eco2026*` (AUDITOR), con PUNTO_LEER y PESAJE_LEER exclusivamente. Puede consultar perfil, padron y pesajes; no gestionar ni escribir. Los privilegios se configuran en Rol y se guardan por rol en PostgreSQL. La suite ahora incluye AuditorTest y la coleccion exportada contiene las pruebas reales del auditor.
+
+SC-C agrega `humedadEstimada` nullable en peticion y respuesta, porcentaje 0..100 con hasta dos decimales. No altera pesoNeto; vacio/null significa sin estimar. El esquema se amplia sin borrar datos y las semillas incluyen valores. Pruebas: 35 casos Spring y 35 peticiones HTTP reales exportadas.
