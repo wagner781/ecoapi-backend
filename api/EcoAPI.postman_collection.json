@@ -1,16 +1,13 @@
 {
   "info": {
-    "name": "EcoAPI - contrato y errores",
+    "name": "EcoAPI - exportacion de peticiones ejecutadas",
+    "description": "Exportada por el cliente Node.js tras verificar las respuestas reales. Los tokens se obtienen con login; no se guardan credenciales de sesion.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {
       "key": "baseUrl",
       "value": "http://localhost:8080/api/v1"
-    },
-    {
-      "key": "token",
-      "value": ""
     },
     {
       "key": "rutaId",
@@ -22,12 +19,118 @@
     },
     {
       "key": "pesajeId",
-      "value": "1"
+      "value": ""
+    },
+    {
+      "key": "clavePesaje",
+      "value": ""
+    },
+    {
+      "key": "token_operario1",
+      "value": ""
+    },
+    {
+      "key": "token_supervisor1",
+      "value": ""
+    },
+    {
+      "key": "token_admin",
+      "value": ""
     }
   ],
   "item": [
     {
-      "name": "Login operario",
+      "name": "401 GET /me",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/me"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/me"
+          },
+          "code": 401,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:46.655318494\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
+    },
+    {
+      "name": "401 POST /auth/login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"operario1\",\n  \"password\": \"incorrecta\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuario\": \"operario1\",\n  \"password\": \"incorrecta\"\n}"
+            }
+          },
+          "code": 401,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:46.772367142\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Credenciales incorrectas\",\n  \"path\": \"/api/v1/auth/login\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
+    },
+    {
+      "name": "200 POST /auth/login",
       "request": {
         "method": "POST",
         "header": [
@@ -48,15 +151,36 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test('Login correcto', () => pm.response.to.have.status(200));",
-              "if (pm.response.code === 200) pm.collectionVariables.set('token', pm.response.json().token);"
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set('token_operario1', pm.response.json().token);"
             ]
           }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuario\": \"operario1\",\n  \"password\": \"Eco2026*\"\n}"
+            }
+          },
+          "code": 200,
+          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"operario1\",\n  \"nombre\": \"operario1\",\n  \"rol\": \"OPERARIO\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PESAJE_CREAR\",\n    \"PESAJE_EDITAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 1,\n  \"expiresAt\": 1793229526\n}"
         }
       ]
     },
     {
-      "name": "Login supervisor",
+      "name": "200 POST /auth/login",
       "request": {
         "method": "POST",
         "header": [
@@ -77,28 +201,86 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test('Login correcto', () => pm.response.to.have.status(200));",
-              "if (pm.response.code === 200) pm.collectionVariables.set('token', pm.response.json().token);"
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set('token_supervisor1', pm.response.json().token);"
             ]
           }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuario\": \"supervisor1\",\n  \"password\": \"Eco2026*\"\n}"
+            }
+          },
+          "code": 200,
+          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"supervisor1\",\n  \"nombre\": \"supervisor1\",\n  \"rol\": \"SUPERVISOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PESAJE_CREAR\",\n    \"PESAJE_EDITAR\",\n    \"PESAJE_ANULAR\",\n    \"RUTA_CERRAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 2,\n  \"expiresAt\": 1793229526\n}"
         }
       ]
     },
     {
-      "name": "401 sin token",
+      "name": "200 POST /auth/login",
       "request": {
-        "method": "GET",
+        "method": "POST",
         "header": [
           {
             "key": "Content-Type",
             "value": "application/json"
           }
         ],
-        "url": "{{baseUrl}}/me"
-      }
+        "url": "{{baseUrl}}/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"admin\",\n  \"password\": \"Eco2026*\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set('token_admin', pm.response.json().token);"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuario\": \"admin\",\n  \"password\": \"Eco2026*\"\n}"
+            }
+          },
+          "code": 200,
+          "body": "{\n  \"token\": \"[oculto]\",\n  \"usuario\": \"admin\",\n  \"nombre\": \"admin\",\n  \"rol\": \"ADMINISTRADOR\",\n  \"privilegios\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PUNTO_GESTIONAR\"\n  ],\n  \"expiresIn\": 3600,\n  \"id\": 3,\n  \"expiresAt\": 1793229527\n}"
+        }
+      ]
     },
     {
-      "name": "Perfil",
+      "name": "401 GET /me",
       "request": {
         "method": "GET",
         "header": [
@@ -108,14 +290,46 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer {{token}}"
+            "value": "Bearer token-invalido"
           }
         ],
         "url": "{{baseUrl}}/me"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer token-invalido"
+              }
+            ],
+            "url": "{{baseUrl}}/me"
+          },
+          "code": 401,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.099892881\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
     },
     {
-      "name": "Ruta del día",
+      "name": "401 GET /me",
       "request": {
         "method": "GET",
         "header": [
@@ -125,14 +339,96 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer {{token}}"
+            "value": "Bearer token-invalido"
+          }
+        ],
+        "url": "{{baseUrl}}/me"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer token-invalido"
+              }
+            ],
+            "url": "{{baseUrl}}/me"
+          },
+          "code": 401,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.107024327\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"message\": \"Token ausente, invalido o vencido\",\n  \"path\": \"/api/v1/me\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
+    },
+    {
+      "name": "200 GET /rutas/dia",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_operario1}}"
           }
         ],
         "url": "{{baseUrl}}/rutas/dia"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set('rutaId', pm.response.json().id); pm.collectionVariables.set('puntoId', pm.response.json().puntos[0].id);"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_operario1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/rutas/dia"
+          },
+          "code": 200,
+          "body": "{\n  \"id\": 1,\n  \"fecha\": \"2026-10-28\",\n  \"usuarioId\": 1,\n  \"cerrada\": false,\n  \"puntos\": [\n    {\n      \"id\": 1,\n      \"razonSocial\": \"Empresa 1\",\n      \"direccion\": \"Av. Reciclaje 1\",\n      \"zona\": \"Norte\",\n      \"materialHabitual\": \"Papel\",\n      \"secuencia\": 1,\n      \"atendido\": true,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 2,\n      \"razonSocial\": \"Empresa 2\",\n      \"direccion\": \"Av. Reciclaje 2\",\n      \"zona\": \"Centro\",\n      \"materialHabitual\": \"Plastico\",\n      \"secuencia\": 2,\n      \"atendido\": true,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 3,\n      \"razonSocial\": \"Empresa 3\",\n      \"direccion\": \"Av. Reciclaje 3\",\n      \"zona\": \"Sur\",\n      \"materialHabitual\": \"Metal\",\n      \"secuencia\": 3,\n      \"atendido\": true,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 4,\n      \"razonSocial\": \"Empresa 4\",\n      \"direccion\": \"Av. Reciclaje 4\",\n      \"zona\": \"Norte\",\n      \"materialHabitual\": \"Papel\",\n      \"secuencia\": 4,\n      \"atendido\": true,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 5,\n      \"razonSocial\": \"Empresa 5\",\n      \"direccion\": \"Av. Reciclaje 5\",\n      \"zona\": \"Centro\",\n      \"materialHabitual\": \"Plastico\",\n      \"secuencia\": 5,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 6,\n      \"razonSocial\": \"Empresa 6\",\n      \"direccion\": \"Av. Reciclaje 6\",\n      \"zona\": \"Sur\",\n      \"materialHabitual\": \"Metal\",\n      \"secuencia\": 6,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    }\n  ]\n}"
+        }
+      ]
     },
     {
-      "name": "Puntos paginados",
+      "name": "200 GET /puntos?zona=Norte&pagina=0&tamanio=2",
       "request": {
         "method": "GET",
         "header": [
@@ -142,31 +438,46 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer {{token}}"
+            "value": "Bearer {{token_operario1}}"
           }
         ],
-        "url": "{{baseUrl}}/puntos?pagina=0&tamanio=20&zona=Norte"
-      }
-    },
-    {
-      "name": "Pesajes",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
+        "url": "{{baseUrl}}/puntos?zona=Norte&pagina=0&tamanio=2"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_operario1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/puntos?zona=Norte&pagina=0&tamanio=2"
           },
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
-          }
-        ],
-        "url": "{{baseUrl}}/puntos/{{puntoId}}/pesajes"
-      }
+          "code": 200,
+          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 1,\n      \"razonSocial\": \"Empresa 1\",\n      \"direccion\": \"Av. Reciclaje 1\",\n      \"zona\": \"Norte\",\n      \"materialHabitual\": \"Papel\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    },\n    {\n      \"id\": 4,\n      \"razonSocial\": \"Empresa 4\",\n      \"direccion\": \"Av. Reciclaje 4\",\n      \"zona\": \"Norte\",\n      \"materialHabitual\": \"Papel\",\n      \"secuencia\": 0,\n      \"atendido\": false,\n      \"motivoOmision\": null\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 2,\n  \"totalElementos\": 4,\n  \"totalPaginas\": 2,\n  \"ultima\": false\n}"
+        }
+      ]
     },
     {
-      "name": "Registrar",
+      "name": "403 POST /rutas/1/cierre",
       "request": {
         "method": "POST",
         "header": [
@@ -176,18 +487,46 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer {{token}}"
+            "value": "Bearer {{token_operario1}}"
           }
         ],
-        "url": "{{baseUrl}}/pesajes",
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"claveCliente\": \"{{$guid}}\"\n}"
+        "url": "{{baseUrl}}/rutas/{{rutaId}}/cierre"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 403', () => pm.response.to.have.status(403));"
+            ]
+          }
         }
-      }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_operario1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/rutas/{{rutaId}}/cierre"
+          },
+          "code": 403,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.126113270\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/rutas/1/cierre\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
     },
     {
-      "name": "400 validación",
+      "name": "409 POST /rutas/1/cierre",
       "request": {
         "method": "POST",
         "header": [
@@ -197,18 +536,285 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer {{token}}"
+            "value": "Bearer {{token_supervisor1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/rutas/{{rutaId}}/cierre"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 409', () => pm.response.to.have.status(409));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_supervisor1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/rutas/{{rutaId}}/cierre"
+          },
+          "code": 409,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.133161202\",\n  \"status\": 409,\n  \"error\": \"Conflict\",\n  \"message\": \"Faltan 2 puntos sin pesaje ni motivo de omision\",\n  \"path\": \"/api/v1/rutas/1/cierre\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
+    },
+    {
+      "name": "403 POST /pesajes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_admin}}"
           }
         ],
         "url": "{{baseUrl}}/pesajes",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"material\": \"Papel\",\n  \"pesoBruto\": 2,\n  \"tara\": 3,\n  \"claveCliente\": \"{{$guid}}\"\n}"
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
         }
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 403', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pesajes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
+            }
+          },
+          "code": 403,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.139821325\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
     },
     {
-      "name": "Corregir",
+      "name": "400 POST /pesajes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_operario1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/pesajes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 21,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 400', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_operario1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pesajes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 21,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{$guid}}\"\n}"
+            }
+          },
+          "code": 400,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.148620718\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Datos invalidos\",\n  \"path\": \"/api/v1/pesajes\",\n  \"validationErrors\": {\n    \"tara\": \"La tara debe ser no negativa y menor que el peso bruto\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "201 POST /pesajes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_operario1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/pesajes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set('clavePesaje', pm.variables.replaceIn('{{$guid}}'));"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+              "pm.collectionVariables.set('pesajeId', pm.response.json().id);"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_operario1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pesajes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\"\n}"
+            }
+          },
+          "code": 201,
+          "body": "{\n  \"id\": 22,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"pesoNeto\": 18,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null\n}"
+        }
+      ]
+    },
+    {
+      "name": "201 POST /pesajes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_operario1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/pesajes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+              "pm.collectionVariables.set('pesajeId', pm.response.json().id);"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_operario1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pesajes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"{{clavePesaje}}\"\n}"
+            }
+          },
+          "code": 201,
+          "body": "{\n  \"id\": 22,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 20,\n  \"tara\": 2,\n  \"pesoNeto\": 18,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null\n}"
+        }
+      ]
+    },
+    {
+      "name": "200 PUT /pesajes/22",
       "request": {
         "method": "PUT",
         "header": [
@@ -218,18 +824,54 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer {{token}}"
+            "value": "Bearer {{token_operario1}}"
           }
         ],
         "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"material\": \"Papel\",\n  \"pesoBruto\": 25,\n  \"tara\": 2,\n  \"claveCliente\": \"edicion\"\n}"
+          "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"27d5a2ba-5663-4f7a-b66b-e0079c1e61da\"\n}"
         }
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_operario1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rutaId\": {{rutaId}},\n  \"puntoId\": {{puntoId}},\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"observacion\": \"Prueba HTTP real\",\n  \"claveCliente\": \"27d5a2ba-5663-4f7a-b66b-e0079c1e61da\"\n}"
+            }
+          },
+          "code": 200,
+          "body": "{\n  \"id\": 22,\n  \"rutaId\": 1,\n  \"puntoId\": 1,\n  \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n  \"material\": \"Papel\",\n  \"pesoBruto\": 24,\n  \"tara\": 2,\n  \"pesoNeto\": 22,\n  \"operario\": \"operario1\",\n  \"operarioId\": 1,\n  \"observacion\": \"Prueba HTTP real\",\n  \"anulado\": false,\n  \"motivoAnulacion\": null\n}"
+        }
+      ]
     },
     {
-      "name": "403 anular como operario",
+      "name": "403 DELETE /pesajes/22",
       "request": {
         "method": "DELETE",
         "header": [
@@ -239,20 +881,56 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer {{token}}"
+            "value": "Bearer {{token_operario1}}"
           }
         ],
         "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"motivo\": \"Duplicado\"\n}"
+          "raw": "{\n  \"motivo\": \"Prueba\"\n}"
         }
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 403', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_operario1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"Prueba\"\n}"
+            }
+          },
+          "code": 403,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.220182733\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/pesajes/22\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
     },
     {
-      "name": "Cerrar ruta como supervisor",
+      "name": "204 DELETE /pesajes/22",
       "request": {
-        "method": "POST",
+        "method": "DELETE",
         "header": [
           {
             "key": "Content-Type",
@@ -260,32 +938,443 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer {{token}}"
+            "value": "Bearer {{token_supervisor1}}"
           }
         ],
-        "url": "{{baseUrl}}/rutas/{{rutaId}}/cierre"
-      }
-    },
-    {
-      "name": "Omitir punto",
-      "request": {
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
-          }
-        ],
-        "url": "{{baseUrl}}/rutas/{{rutaId}}/puntos/{{puntoId}}/omision",
+        "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"motivo\": \"Empresa cerrada\"\n}"
+          "raw": "{\n  \"motivo\": \"Finaliza prueba HTTP\"\n}"
         }
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_supervisor1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pesajes/{{pesajeId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"Finaliza prueba HTTP\"\n}"
+            }
+          },
+          "code": 204,
+          "body": "null"
+        }
+      ]
+    },
+    {
+      "name": "200 GET /puntos/1/pesajes?tamanio=100",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_operario1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/puntos/1/pesajes?tamanio=100"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_operario1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/puntos/1/pesajes?tamanio=100"
+          },
+          "code": 200,
+          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 22,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:18:47.163870851-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 21,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T17:14:08.479296452-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 18,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:58:13.511488279-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 16,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T14:40:09.394062600-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 24,\n      \"tara\": 2,\n      \"pesoNeto\": 22,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Prueba HTTP real\",\n      \"anulado\": true,\n      \"motivoAnulacion\": \"Finaliza prueba HTTP\"\n    },\n    {\n      \"id\": 1,\n      \"rutaId\": 1,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-28T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null\n    },\n    {\n      \"id\": 10,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:06-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 31,\n      \"tara\": 2,\n      \"pesoNeto\": 29,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null\n    },\n    {\n      \"id\": 4,\n      \"rutaId\": 2,\n      \"puntoId\": 1,\n      \"fechaHora\": \"2026-10-27T08:00-05:00\",\n      \"material\": \"Papel\",\n      \"pesoBruto\": 25,\n      \"tara\": 2,\n      \"pesoNeto\": 23,\n      \"operario\": \"operario1\",\n      \"operarioId\": 1,\n      \"observacion\": \"Semilla de demostracion\",\n      \"anulado\": false,\n      \"motivoAnulacion\": null\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 100,\n  \"totalElementos\": 7,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
+        }
+      ]
+    },
+    {
+      "name": "404 GET /puntos/9999999/pesajes",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_operario1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/puntos/9999999/pesajes"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_operario1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/puntos/9999999/pesajes"
+          },
+          "code": 404,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.258000223\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Punto inexistente\",\n  \"path\": \"/api/v1/puntos/9999999/pesajes\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
+    },
+    {
+      "name": "404 GET /ruta-inexistente",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_operario1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/ruta-inexistente"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_operario1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/ruta-inexistente"
+          },
+          "code": 404,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.264961273\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Recurso inexistente\",\n  \"path\": \"/api/v1/ruta-inexistente\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
+    },
+    {
+      "name": "200 GET /usuarios",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_admin}}"
+          }
+        ],
+        "url": "{{baseUrl}}/usuarios"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios"
+          },
+          "code": 200,
+          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 1,\n      \"usuario\": \"operario1\",\n      \"nombre\": \"operario1\",\n      \"rol\": \"OPERARIO\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\"\n      ],\n      \"activo\": true\n    },\n    {\n      \"id\": 2,\n      \"usuario\": \"supervisor1\",\n      \"nombre\": \"supervisor1\",\n      \"rol\": \"SUPERVISOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\",\n        \"PESAJE_ANULAR\",\n        \"RUTA_CERRAR\"\n      ],\n      \"activo\": true\n    },\n    {\n      \"id\": 3,\n      \"usuario\": \"admin\",\n      \"nombre\": \"admin\",\n      \"rol\": \"ADMINISTRADOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PUNTO_GESTIONAR\"\n      ],\n      \"activo\": true\n    },\n    {\n      \"id\": 4,\n      \"usuario\": \"operario2\",\n      \"nombre\": \"operario2\",\n      \"rol\": \"OPERARIO\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\"\n      ],\n      \"activo\": true\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 20,\n  \"totalElementos\": 4,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
+        }
+      ]
+    },
+    {
+      "name": "200 GET /roles",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_admin}}"
+          }
+        ],
+        "url": "{{baseUrl}}/roles"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{baseUrl}}/roles"
+          },
+          "code": 200,
+          "body": "{\n  \"contenido\": [\n    {\n      \"nombre\": \"ADMINISTRADOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PUNTO_GESTIONAR\"\n      ]\n    },\n    {\n      \"nombre\": \"OPERARIO\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\"\n      ]\n    },\n    {\n      \"nombre\": \"ROL_QA_225837\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\"\n      ]\n    },\n    {\n      \"nombre\": \"SUPERVISOR\",\n      \"privilegios\": [\n        \"PUNTO_LEER\",\n        \"PESAJE_LEER\",\n        \"PESAJE_CREAR\",\n        \"PESAJE_EDITAR\",\n        \"PESAJE_ANULAR\",\n        \"RUTA_CERRAR\"\n      ]\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 20,\n  \"totalElementos\": 4,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
+        }
+      ]
+    },
+    {
+      "name": "200 GET /privilegios",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_admin}}"
+          }
+        ],
+        "url": "{{baseUrl}}/privilegios"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{baseUrl}}/privilegios"
+          },
+          "code": 200,
+          "body": "{\n  \"contenido\": [\n    \"PUNTO_LEER\",\n    \"PESAJE_LEER\",\n    \"PESAJE_CREAR\",\n    \"PESAJE_EDITAR\",\n    \"PESAJE_ANULAR\",\n    \"RUTA_CERRAR\",\n    \"PUNTO_GESTIONAR\"\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 100,\n  \"totalElementos\": 7,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
+        }
+      ]
+    },
+    {
+      "name": "403 GET /usuarios",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_supervisor1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/usuarios"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 403', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_supervisor1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios"
+          },
+          "code": 403,
+          "body": "{\n  \"timestamp\": \"2026-10-28T22:18:47.295815801\",\n  \"status\": 403,\n  \"error\": \"Forbidden\",\n  \"message\": \"No posee el privilegio requerido\",\n  \"path\": \"/api/v1/usuarios\",\n  \"validationErrors\": {}\n}"
+        }
+      ]
+    },
+    {
+      "name": "200 GET /rutas",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_supervisor1}}"
+          }
+        ],
+        "url": "{{baseUrl}}/rutas"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Respuesta real observada",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_supervisor1}}"
+              }
+            ],
+            "url": "{{baseUrl}}/rutas"
+          },
+          "code": 200,
+          "body": "{\n  \"contenido\": [\n    {\n      \"id\": 1,\n      \"fecha\": \"2026-10-28\",\n      \"usuarioId\": 1,\n      \"usuario\": \"operario1\",\n      \"cerrada\": false\n    },\n    {\n      \"id\": 3,\n      \"fecha\": \"2026-10-28\",\n      \"usuarioId\": 2,\n      \"usuario\": \"supervisor1\",\n      \"cerrada\": false\n    }\n  ],\n  \"pagina\": 0,\n  \"tamanio\": 20,\n  \"totalElementos\": 2,\n  \"totalPaginas\": 1,\n  \"ultima\": true\n}"
+        }
+      ]
     }
   ]
 }
